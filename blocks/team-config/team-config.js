@@ -1,7 +1,5 @@
-const API_KEY = 'RGAPI-fa003659-def1-4aec-9283-b4f997368bbc';
-const capitalize = ([firstLetter, ...restOfWord]) =>
-  firstLetter.toUpperCase() + restOfWord.join("");
-const log = m => console.log(m);
+import { getRiotAPIKey, capitalize } from '/scripts/utils.js';
+
 class Player {
     constructor(name, position, level) {
         this.name = name;
@@ -236,6 +234,7 @@ const setTierByInputChange = async (inputEl) => {
     };
 
     try {
+        const API_KEY = await getRiotAPIKey();
         const summAPI = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}?api_key=${API_KEY}`;
         const summRes = await fetch(summAPI);
         
@@ -362,8 +361,9 @@ const teamConfigBody = `
                             <a target="_blank" href="https://github.com/seanchoi-dev/seanchoi-dev.github.io"><img class="social-icon" src="../lib/images/github-icon.png" alt="discord"></a>
                         </div>
                     </div>
-                    <div class="text-white">
-                        <h5 class="my-1 text-end">Beta v1.0</h5>
+                    <div class="text-white d-flex align-items-center gap-2">
+                        <h5 class="my-1 text-end">v1.0</h5>
+                        <a class="link-light" href="#">Release note</a>
                     </div>
                 </div>
             </div>
@@ -468,7 +468,7 @@ const importBtnEvent = () => {
     });
 }
 
-export default function fn (block) {
+export default async function fn (block) {
     block.innerHTML = teamConfigBody;
     initTeam();
     document.querySelector('audio').volume = 0.25;

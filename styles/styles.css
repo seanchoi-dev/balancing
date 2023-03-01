@@ -19,27 +19,27 @@ label.active {
 }
 
 .label-position-all {
-  background-image: url('../lib/images/icon-position-all-wh.svg');
+  background-image: url('/lib/images/icon-position-all-wh.svg');
 }
 
 .label-position-top {
-  background-image: url('../lib/images/icon-position-top-wh.svg');
+  background-image: url('/lib/images/icon-position-top-wh.svg');
 }
 
 .label-position-jungle {
-  background-image: url('../lib/images/icon-position-jng-wh.svg');
+  background-image: url('/lib/images/icon-position-jng-wh.svg');
 }
 
 .label-position-mid {
-  background-image: url('../lib/images/icon-position-mid-wh.svg');
+  background-image: url('/lib/images/icon-position-mid-wh.svg');
 }
 
 .label-position-adc {
-  background-image: url('../lib/images/icon-position-bot-wh.svg');
+  background-image: url('/lib/images/icon-position-bot-wh.svg');
 }
 
 .label-position-support {
-  background-image: url('../lib/images/icon-position-sup-wh.svg');
+  background-image: url('/lib/images/icon-position-sup-wh.svg');
 }
 
 .bg-grey-opacity {
@@ -125,6 +125,30 @@ border: 1px solid red;
   border-radius: 7px;
 }
 
+video {
+  z-index: 0;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  filter:grayscale(90%);
+}
+
+.team-config.block {
+  position: relative;
+  z-index: 1;
+  background-image: url('/lib/images/bg1.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 1000px;
+}
+
+.title, .rebalance-btn-container, .bg-dark-t {
+  background-color: #00000066;
+}
+
 /* for result */
 .result {
   font-size: 18px;
@@ -151,31 +175,6 @@ border: 1px solid red;
 }
 .vs img {
   max-width: 90%;
-}
-
-video {
-  z-index: 0;
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  min-width: 100%;
-  min-height: 100%;
-  filter:grayscale(90%);
-}
-
-.team-config.block {
-  position: relative;
-  z-index: 1;
-  background-image: url('../lib/images/bg1.jpg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  min-height: 1000px;
-}
-
-.title, .rebalance-btn-container, .bg-dark-t {
-  background-color: #00000066;
-  
 }
 
 .covered-positions {
