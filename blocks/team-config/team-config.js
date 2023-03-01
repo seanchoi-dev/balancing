@@ -418,13 +418,13 @@ Youngjin joined the lobby"></textarea>
                 <div class="audio-player">
                     <div class="px-3 pt-3"><small>
                         <select name="bgm" id="bgmSelect" class="bgm-select">
-                            <option value="../../lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3">2022 LCK 밴픽 브금 LCK Champ Select BGM</option>
-                            <option value="../../lib/audios/Take Over - Worlds 2020.mp3">Take Over - Worlds 2020.mp3</option>
+                            <option value="https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3">2022 LCK 밴픽 브금 LCK Champ Select BGM</option>
+                            <option value="https://seanchoi-dev.github.io/lib/audios/Take%20Over%20-%20Worlds%202020.mp3">Take Over - Worlds 2020.mp3</option>
                         </select>
                     </small></div>
                     <audio controls loop>
-                        <source id = 'bgmSource' src='../../lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3'/>
-                        <embed src= '../../lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3' loop='loop'/>
+                        <source id = 'bgmSource' src='https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3'/>
+                        <embed src= 'https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3' loop='loop'/>
                     </audio>
                 </div>                            
             </div>
