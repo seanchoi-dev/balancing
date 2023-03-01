@@ -1,237 +1,191 @@
-/*
- * Copyright 2020 Adobe. All rights reserved.
- * This file is licensed to you under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License. You may obtain a copy
- * of the License at http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
-
- :root {
-  /* colors */
-  --link-color: #035fe6;
-  --link-hover-color: #136ff6;
-  --background-color: #fff;
-  --overlay-background-color: #eee;
-  --highlight-background-color: #ccc;
-  --text-color: #000;
-
-  /* fonts */
-  --body-font-family: 'helvetica neue', helvetica, ubuntu, roboto, noto, sans-serif;
-  --heading-font-family: var(--body-font-family);
-  --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
-
-  /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 18px;
-  --body-font-size-xs: 16px;
-
-  /* heading sizes */
-  --heading-font-size-xxl: 48px;
-  --heading-font-size-xl: 40px;
-  --heading-font-size-l: 32px;
-  --heading-font-size-m: 24px;
-  --heading-font-size-s: 20px;
-  --heading-font-size-xs: 18px;
-
-  /* nav height */
-  --nav-height: 64px;
-
+a {
+  cursor: pointer;
 }
 
-body {
-  font-size: var(--body-font-size-m);
-  margin: 0;
-  font-family: var(--body-font-family);
-  line-height: 1.6;
-  color: var(--text-color);
-  background-color: var(--background-color);
-  display: none;
+label, select {
+  cursor: pointer;
 }
 
-body.appear {
-  display: unset;
+label:hover,
+label:active,
+label:focus,
+label.active {
+  background-color: #f97352;
+  color: #fff;
+}
+.head-label:hover {
+  background: inherit;
+  color: #000;
 }
 
-header {
-  height: var(--nav-height);
+.label-position-all {
+  background-image: url('../lib/images/icon-position-all-wh.svg');
 }
 
-h1, h2, h3,
-h4, h5, h6 {
-  font-family: var(--heading-font-family);
-  font-weight: 600;
-  line-height: 1.25;
-  margin-top: 1em;
-  margin-bottom: .5em;
-  scroll-margin: calc(var(--nav-height) + 1em);
+.label-position-top {
+  background-image: url('../lib/images/icon-position-top-wh.svg');
 }
 
-h1 { font-size: var(--heading-font-size-xxl) }
-h2 { font-size: var(--heading-font-size-xl) }
-h3 { font-size: var(--heading-font-size-l) }
-h4 { font-size: var(--heading-font-size-m) }
-h5 { font-size: var(--heading-font-size-s) }
-h6 { font-size: var(--heading-font-size-xs) }
-
-p, dl, ol, ul, pre, blockquote {
-  margin-top: 1em;
-  margin-bottom: 1em;
+.label-position-jungle {
+  background-image: url('../lib/images/icon-position-jng-wh.svg');
 }
 
-a:any-link {
-  color: var(--link-color);
-  text-decoration: none;
+.label-position-mid {
+  background-image: url('../lib/images/icon-position-mid-wh.svg');
 }
 
-a:hover {
-  text-decoration: underline;
-  color: var(--link-hover-color);
+.label-position-adc {
+  background-image: url('../lib/images/icon-position-bot-wh.svg');
 }
 
-code, pre, samp {
-  font-family: var(--fixed-font-family);
-  font-size: var(--body-font-size-s);
+.label-position-support {
+  background-image: url('../lib/images/icon-position-sup-wh.svg');
 }
 
-code, samp {
-  padding: .125em;
+.bg-grey-opacity {
+  background-color: #f0f0f0d4;
 }
 
-pre {
-  overflow: scroll;
+.bg-dark-grey-opacity {
+  background-color: #43474db3;
 }
 
-/* buttons */
-
-a.button:any-link, button {
-  font-family: var(--body-font-family);
-  display: inline-block;
-  box-sizing: border-box;
-  text-decoration: none;
-  border: 2px solid transparent;
-  padding: 5px 30px;
+.label-position, .level-participant label {
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 36px;
+  height: 36px;
   text-align: center;
-  font-style: normal; 
-  font-weight: 600;
-  cursor: pointer;
-  color: var(--background-color);
-  background-color: var(--link-color);
-  margin: 16px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 18px;
+  padding-top: 5px;
+  padding-bottom: 3px;
+  font-weight: 400;
+  margin-bottom: 0;
+  border-radius: 3px;
+}
+
+.label-position {
+  background-color: #43474d;
+}
+
+.level-participant label:not(.active) {
+  background-color: #fff;
+  color: #555;
+}
+
+.nm-as-row {
+  margin: 0 calc(-.5 * var(--bs-gutter-x));
+}
+
+.input-error {
+border: 1px solid red;  
+}
+
+.trash-icon {
+  text-decoration: none;
+  font-size: 22px;
+  color: var(--bs-danger);
+  position: relative;
+  top: -2px
+}
+
+.share-link {
+  font-size: 14px;
+}
+
+.audio-player {
+  position: absolute;
+  right: 60px;
+  bottom: 35px;
+  border: 1px solid;
   border-radius: 30px;
+  background-color: #f1f3f4;
 }
 
-a.button:hover, a.button:focus, button:hover, button:focus  {
-  background-color: var(--link-hover-color);
+.level-config label {
   cursor: pointer;
 }
 
-button:disabled, button:disabled:hover {
-  background-color: var(--overlay-background-color);
-  cursor: unset;
-}
-
-a.button.secondary, button.secondary {
-  background-color: unset;
-  border: 2px solid currentcolor;
-  color: var(--text-color)
+.level-config label,
+.level-config input {
+  font-size: 1rem;;
+  width: 36px;
+  text-align: center;
 } 
 
-
-main input {
-  font-size: 1.25rem;
-  width: 100%;
-  max-width: 50rem;
-  display: block;
-  margin-bottom: 1rem;
-  padding: 0.75rem 0.6rem;    
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-  border: 1px solid var(--text-color);
-  color: var(--text-color);
-  background-color: var(--background-color);
+.participant-div .input-group {
+  max-width: 208px;
 }
 
-main input:hover {
-  border: 1px solid var(--text-color);
+.participant-div small {
+  font-size: 12px;
 }
 
-main .section {
-  padding: 64px 16px;
+.bgm-select {
+  border-radius: 7px;
 }
 
-main pre {
-  background-color: var(--overlay-background-color);
-  padding: 1em;
-  border-radius: .25em;
-  overflow-x: auto;
-  white-space: pre;
+/* for result */
+.result {
+  font-size: 18px;
+  font-weight: 400;
+  color: #333;
+  margin-bottom: 0;
+}
+.level {
+  width: 65.1px;
+  font-weight: 700;
+}
+.level small {
+  font-weight: normal;
+}
+.icon {
+  background-color: #f97352;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 35px;
+  height: 35px;
+}
+.social-icon {
+  max-width: 30px;
+}
+.vs img {
+  max-width: 90%;
 }
 
-main blockquote {
-  font-style: italic;
-  margin: 3rem;
-  text-indent: -1rem;
-  hanging-punctuation: first;
+video {
+  z-index: 0;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  filter:grayscale(90%);
 }
 
-main blockquote p::before {
-  content: "“";
-  line-height: 0;
+.team-config.block {
+  position: relative;
+  z-index: 1;
+  background-image: url('../lib/images/bg1.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 1000px;
 }
 
-main blockquote p::after {
-  content: "”";
-  line-height: 0;
-}
-
-hr {
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
-  border: 0;
-  border-bottom: 1px solid var(--overlay-background-color);
-}
-
-main img {
-  max-width: 100%;
-  width: auto;
-  height: auto;
-}
-
-@media (min-width: 600px) {
-  main .section {
-    padding: 64px 32px;
-  }  
-}
-
-@media (min-width: 900px) {
-  :root {
-    --heading-font-size-xxl: 60px;
-    --heading-font-size-xl: 48px;
-    --heading-font-size-l: 36px;
-    --heading-font-size-m: 30px;
-    --heading-font-size-s: 24px;
-    --heading-font-size-xs: 22px;  
-  }
+.title, .rebalance-btn-container, .bg-dark-t {
+  background-color: #00000066;
   
-  .section > div {
-    max-width: 1200px;
-    margin: auto;
-  }
 }
 
-/* progressive section appearance */
-main .section[data-section-status='loading'],
-main .section[data-section-status='initialized'] {
-  display: none;
+.covered-positions {
+  min-width: 195px;
+  position: relative;
 }
 
-main .section.highlight {
-  background-color: var(--highlight-background-color);
+.covered-positions.warning::after {
+  content: 'Missing position';
+  position: absolute;
+  color: #fff;
+  right: -150px;
 }
