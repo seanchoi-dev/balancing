@@ -1,4 +1,5 @@
 import { getRiotAPIKey, capitalize } from '/scripts/utils.js';
+let API_KEY = '';
 
 class Player {
     constructor(name, position, level) {
@@ -207,8 +208,24 @@ const getTierFromOpgg = async (name) => {
     return tier;
 }
 
-const setLevelByTier = (tier) => {
+const setTierCache = (name, tier) => {
+    let tiers = {}
+    if(window.localStorage.tiers) {
+        tiers = JSON.parse(window.localStorage.tiers);
+    }
+    const _time_now_ = Date.now();
+    tiers[name] = { tier: tier, recorded: _time_now_ };
+    window.localStorage.tiers = JSON.stringify(tiers);
+}
 
+const getTierFromCache = (name) => {
+    if (window.localStorage.tiers) {
+        const tiers = JSON.parse(window.localStorage.tiers);
+        if(Date.now() - tiers[name].recorded < 86400000) {
+            return tiers[name].tier;
+        }
+    }
+    return false;
 }
 
 const setTierByInputChange = async (inputEl) => {
@@ -222,24 +239,30 @@ const setTierByInputChange = async (inputEl) => {
         btn.classList.add('disabled');
         return;
     }
-    
-    const setByOpgg = async () => {
+
+    if (getTierFromCache(name)) {
+        btn.href = `https://www.op.gg/summoners/na/${name}`;
+        btn.classList.remove('disabled');
+        tierEl.innerHTML = getTierFromCache(name);
+        return;
+    }
+
+    const setOpgg = async () => {
         tierStr = await getTierFromOpgg(name);
         if (tierStr) {
             btn.href = `https://www.op.gg/summoners/na/${name}`;
             btn.classList.remove('disabled');
-            tierEl.innerHTML = capitalize(tierStr);
+            tierEl.innerHTML = 'OP.GG';
             return;
         }
     };
 
     try {
-        const API_KEY = await getRiotAPIKey();
         const summAPI = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}?api_key=${API_KEY}`;
         const summRes = await fetch(summAPI);
         
         if (summRes.status !== 200 && summRes.status !== 404) {
-            setByOpgg();
+            setOpgg();
         }
 
         if(!summRes.ok) {
@@ -253,7 +276,7 @@ const setTierByInputChange = async (inputEl) => {
         const leagueRes = await fetch(leagueAPI);
         
         if (leagueRes.status !== 200 && leagueRes.status !== 404) {
-            setByOpgg();
+            setOpgg();
         }
         
         const leagueJson = await leagueRes.json();
@@ -268,6 +291,7 @@ const setTierByInputChange = async (inputEl) => {
         console.error('Failed to load Riot API', err);
     }
     tierEl.innerHTML = capitalize(tierStr);
+    setTierCache(name, capitalize(tierStr));
 }
 
 const clearAll = () => {
@@ -469,6 +493,7 @@ const importBtnEvent = () => {
 }
 
 export default async function fn (block) {
+    API_KEY = await getRiotAPIKey();
     block.innerHTML = teamConfigBody;
     initTeam();
     document.querySelector('audio').volume = 0.25;
