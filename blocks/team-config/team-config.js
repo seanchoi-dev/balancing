@@ -393,7 +393,7 @@ const teamConfigBody = `
             </div>
         </div>
         <div class="bg-grey-opacity">
-            <div class="container padding-bloc position-relative">
+            <div class="container pb-5 position-relative">
                 <div class="general-config row align-items-center py-3 mb-3 border-bottom border-dark">
                     <div class="form-group col-6 d-flex gap-3 align-items-center">
                         <select class="head-select px-2" id="nb-participants" control-id="ControlID-3">
@@ -435,26 +435,25 @@ Youngjin joined the lobby"></textarea>
                         (adsbygoogle = window.adsbygoogle || []).push({});
                     </script>
                 </div>
-                <div class="error-msg text-danger" style="display: none;">Fill out player's <strong>Name</strong>.</div>
-                <div class="form-group btn-in-row py-5 d-flex justify-content-center">
-                    <button type="submit" id="mix_save" class="btn btn-primary py-3 px-5 mx-auto">Generate Match</button>
-                </div>
-                <div class="audio-player">
-                    <div class="px-3 pt-3"><small>
-                        <select name="bgm" id="bgmSelect" class="bgm-select">
-                            <option value="https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3">2022 LCK 밴픽 브금 LCK Champ Select BGM</option>
-                            <option value="https://seanchoi-dev.github.io/lib/audios/Take%20Over%20-%20Worlds%202020.mp3">Take Over - Worlds 2020.mp3</option>
-                        </select>
-                    </small></div>
-                    <audio controls loop>
-                        <source id = 'bgmSource' src='https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3'/>
-                        <embed src= 'https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3' loop='loop'/>
-                    </audio>
-                </div>                            
+                <div class="error-msg text-danger" style="display: none;">Fill out player's <strong>Name</strong>.</div>                      
             </div>
-
         </div>
     </form>
+    <div class="form-group btn-in-row py-5 d-flex justify-content-center">
+        <button type="submit" id="mix_save" class="btn btn-primary py-3 px-5 mx-auto">Generate Match</button>
+    </div>
+    <div class="audio-player">
+        <div class="px-3 pt-3"><small>
+            <select name="bgm" id="bgmSelect" class="bgm-select">
+                <option value="https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3">2022 LCK 밴픽 브금 LCK Champ Select BGM</option>
+                <option value="https://seanchoi-dev.github.io/lib/audios/Take%20Over%20-%20Worlds%202020.mp3">Take Over - Worlds 2020.mp3</option>
+            </select>
+        </small></div>
+        <audio controls loop>
+            <source id = 'bgmSource' src='https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3'/>
+            <embed src= 'https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3' loop='loop'/>
+        </audio>
+    </div>
 </div>
 `;
 
