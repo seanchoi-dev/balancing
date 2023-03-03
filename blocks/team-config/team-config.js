@@ -248,13 +248,13 @@ const setTierByInputChange = async (inputEl) => {
     }
 
     const setOpgg = async () => {
-        tierStr = await getTierFromOpgg(name);
-        if (tierStr) {
+        // tierStr = await getTierFromOpgg(name);
+        // if (tierStr) {
             btn.href = `https://www.op.gg/summoners/na/${name}`;
             btn.classList.remove('disabled');
             tierEl.innerHTML = 'OP.GG';
             return;
-        }
+        // }
     };
 
     try {
