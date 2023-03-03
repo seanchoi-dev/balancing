@@ -1,5 +1,6 @@
 # League of Legend Team Balancing Tool
-This web application will help to balance 10 different users by their tiers and positions.
+- This web application is built with Franklin (i.e. helix) project.
+- This app's main goal is to help balancing 10 different players by their tiers and positions in League of Legned custom game.
 
 
 ## Environments
@@ -24,7 +25,7 @@ npm test
 1. Install the [Helix CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/helix-cli`
 1. Start Franklin Proxy: `hlx up` (opens your browser at `http://localhost:3000`)
 1. Open the `{repo}` directory in your favorite IDE and start coding :)
-1. Also take a look https://www.hlx.live/developer/tutorial
+1. Also take a look https://www.hlx.live/developer/tutorial for more documentation about helix project.
 
 
 ## Collaborators
