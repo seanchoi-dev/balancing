@@ -1,6 +1,6 @@
 # League of Legend Team Balancing Tool
-- This web application is built with Franklin (i.e. helix) project.
 - This app's main goal is to help balancing 10 different players by their tiers and positions in League of Legned custom game.
+- This web application is built with Franklin (i.e. helix) project.
 
 
 ## Environments
