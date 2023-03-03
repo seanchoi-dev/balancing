@@ -34,3 +34,4 @@ npm test
 1. Always create a branch for your work.
 1. Create a Pull Request to submit your work.
 1. You are welcome to create new issue as well if you found things to fix or add.
+1. Do not hesitate to contact me if you have any questions.
