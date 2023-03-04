@@ -212,17 +212,17 @@ const copyState = async (teams) => {
 }
 
 const resultBody = `
-<div class="container">
+<div class="container-fluid">
     <div class="title nm-as-row py-5 text-center text-white">
         <h1>Get ready for next battle!</h1>
     </div>
     <div class="bg-dark-t row">
-        <div class="pb-2"><div id="shareLink" class="share-link btn btn-success">Share</div></div>
+        <!-- <div class="pb-2"><div id="shareLink" class="share-link btn btn-success">Share</div></div> -->
     </div>
-    <div id="result_row" class="result bg-dark-grey-opacity pb-3 row justify-content-between"></div>
+    <div id="result_row" class="result bg-dark-grey-opacity p-3 row justify-content-between"></div>
 </div>
-<div class="container rebalance-btn-container p-4 d-flex justify-content-center">
-    <button class="py-2 px-5 btn btn-primary" onclick="location.reload()">Rebalance<br><small>(Re-Roll)</small></button>
+<div class="container-fluid rebalance-btn-container p-4 d-flex justify-content-center">
+    <button class="py-2 px-5 btn btn-primary" onclick="window.location.hash = ''; window.location.hash = '#result';">Rebalance<br><small>(Re-Roll)</small></button>
 </div>
 `;
 
@@ -230,7 +230,7 @@ export default async function fn (block) {
     block.innerHTML = resultBody;
     const { hash } = window.location;
     let decodedTeams = {};
-    if (hash) {
+    if (hash && hash.length > 10) {
       // window.location.hash = '';
       const encodedTeams = hash.startsWith('#') ? hash.substring(1) : hash;
       decodedTeams = parseEncodedTeams(encodedTeams);
@@ -238,13 +238,18 @@ export default async function fn (block) {
     } else {
       state = JSON.parse(window.localStorage.state);
     }
-
+    
     const teams = decodedTeams.team1 ? decodedTeams : balanceTeamsByLevels(state.players);
+    
     // console.log(teams, totalLevels(teams.team1), totalLevels(teams.team2));
-    const result = document.getElementById('result_row');
+    
+
+    const result = block.querySelector('#result_row');
+    
     result.innerHTML = generateTeam(teams.team1) + vs() + generateTeam(teams.team2);
-    addOpggLinks(0);
-    addOpggLinks(1);
-    document.getElementById('shareLink').addEventListener('click', () => copyState(teams));
+
+    // addOpggLinks(0);
+    // addOpggLinks(1);
+    // document.getElementById('shareLink').addEventListener('click', () => copyState(teams));
 };
 

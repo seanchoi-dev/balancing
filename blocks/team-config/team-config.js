@@ -363,11 +363,8 @@ const initTeam = () => {
     levelConfig();
     document.querySelector('.trash-icon').addEventListener('click', e => clearAll());
     document.querySelectorAll('.input-participants').forEach(i => setTierByInputChange(i));
-    document.getElementById('shareLink').addEventListener('click', () => copyState());
-    document.getElementById('resultOpen').addEventListener('click', async e => {
-        const { default:modal } = await import(`${CONFIG.libs}/blocks/modal/modal.js`);
-        modal(e.target);
-    });
+    // document.getElementById('shareLink').addEventListener('click', () => copyState());
+
     document.getElementById('bgmSelect').addEventListener('change', e => {
         const audio = document.querySelector('.audio-player audio');
         audio.querySelector('source').src = e.target.value;
@@ -415,7 +412,7 @@ const teamConfigBody = `
                         <a class="trash-icon px-2 toggle-it" title="Clear all participants">
                             <span><i class="fa fa-trash"></i></span>
                         </a>
-                        <div id="shareLink" class="share-link btn btn-success">Share</div>
+                        <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
                     </div>
                     <div class="level-config col-6 d-flex gap-2"></div>
                 </div>
@@ -446,11 +443,6 @@ Youngjin joined the lobby"></textarea>
             </div>
         </div>
     </form>
-    <div class="form-group btn-in-row py-5 d-flex justify-content-center">
-        <a id="resultOpen" href="#result" data-modal-path="/fragments/match-result" data-modal-hash="#result" class="modal link-block d-block position-relative text-center">
-            <button type="submit" class="btn btn-primary py-3 px-5 mx-auto">Generate Match</button>
-        </a>
-    </div>
     <div class="audio-player">
         <div class="px-3 pt-3"><small>
             <select name="bgm" id="bgmSelect" class="bgm-select">
@@ -502,7 +494,9 @@ const importBtnEvent = () => {
 
 export default async function fn (block) {
     API_KEY = await getRiotAPIKey();
-    block.innerHTML = teamConfigBody;
+    const configBody = document.createElement('div');
+    configBody.innerHTML = teamConfigBody;
+    block.prepend(configBody);
     initTeam();
     document.querySelector('audio').volume = 0.25;
 }
