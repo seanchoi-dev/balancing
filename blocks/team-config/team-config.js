@@ -1,4 +1,6 @@
-import { getRiotAPIKey, capitalize } from '/scripts/utils.js';
+import { getRiotAPIKey, capitalize, getLibs } from '/scripts/utils.js';
+import { CONFIG } from '/scripts/scripts.js';
+
 let API_KEY = '';
 
 class Player {
@@ -337,7 +339,7 @@ const copyState = async () => {
 
 const initTeam = () => {
     const { hash } = window.location;
-    if (hash) {
+    if (hash && hash.length > 10) {
         window.location.hash = '';
         const encodedState = hash.startsWith('#') ? hash.substring(1) : hash;
         state = parseEncodedState(encodedState);
@@ -359,8 +361,13 @@ const initTeam = () => {
     importBtnEvent();
     numParticipantsEvent();
     levelConfig();
+    document.querySelector('.trash-icon').addEventListener('click', e => clearAll());
     document.querySelectorAll('.input-participants').forEach(i => setTierByInputChange(i));
     document.getElementById('shareLink').addEventListener('click', () => copyState());
+    document.getElementById('resultOpen').addEventListener('click', async e => {
+        const { default:modal } = await import(`${CONFIG.libs}/blocks/modal/modal.js`);
+        modal(e.target);
+    });
     document.getElementById('bgmSelect').addEventListener('change', e => {
         const audio = document.querySelector('.audio-player audio');
         audio.querySelector('source').src = e.target.value;
@@ -405,7 +412,7 @@ const teamConfigBody = `
                         <a class="import-icon toggle-it" data-bs-toggle="collapse" href="#import-participant" role="button" aria-expanded="false" aria-controls="import-participant">
                             <span><i class="fa fa-clipboard"></i></span>
                         </a>
-                        <a class="trash-icon px-2 toggle-it" title="Clear all participants" onclick="clearAll()">
+                        <a class="trash-icon px-2 toggle-it" title="Clear all participants">
                             <span><i class="fa fa-trash"></i></span>
                         </a>
                         <div id="shareLink" class="share-link btn btn-success">Share</div>
@@ -440,7 +447,9 @@ Youngjin joined the lobby"></textarea>
         </div>
     </form>
     <div class="form-group btn-in-row py-5 d-flex justify-content-center">
-        <button type="submit" id="mix_save" class="btn btn-primary py-3 px-5 mx-auto">Generate Match</button>
+        <a id="resultOpen" href="#result" data-modal-path="/fragments/match-result" data-modal-hash="#result" class="modal link-block d-block position-relative text-center">
+            <button type="submit" class="btn btn-primary py-3 px-5 mx-auto">Generate Match</button>
+        </a>
     </div>
     <div class="audio-player">
         <div class="px-3 pt-3"><small>

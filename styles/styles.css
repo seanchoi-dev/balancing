@@ -1,3 +1,15 @@
+/* override milo style */
+
+main {
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+main .container {
+  width: 100%;
+}
+
+/* end override milo style */
+
 a {
   cursor: pointer;
 }
@@ -135,7 +147,7 @@ video {
   filter:grayscale(90%);
 }
 
-.team-config.block {
+.team-config {
   position: relative;
   z-index: 1;
   background-image: url('/lib/images/bg1.jpg');
