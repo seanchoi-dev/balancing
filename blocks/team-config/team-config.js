@@ -383,7 +383,7 @@ const teamConfigBody = `
                         </div>
                     </div>
                     <div class="text-white d-flex align-items-center gap-2">
-                        <h5 class="my-1 text-end">v1.0</h5>
+                        <h5 class="my-1 text-end">v0.93</h5>
                         <a class="link-light" href="#">Release note</a>
                     </div>
                 </div>
