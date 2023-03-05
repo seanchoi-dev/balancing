@@ -299,6 +299,7 @@ const clearAll = () => {
         levelConfig: defaultLevelMap,
     };
     saveState();
+    window.localStorage.removeItem('tiers');
     initTeam();
 };
 
