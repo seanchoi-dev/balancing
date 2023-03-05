@@ -473,7 +473,7 @@ const importBtnEvent = () => {
                 }
             }
         });
-        for(let i=0; i<pArray.length; i++){
+        for (let i=0; i<pArray.length && pArray.length < state.numOfPlayers; i++){
             nameInputEl = document.getElementById(`mix_players_${i}_name`);
             nameInputEl.value = pArray[i];   
             setTierByInputChange(nameInputEl);
