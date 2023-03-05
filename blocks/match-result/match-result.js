@@ -147,6 +147,14 @@ const generateTeam = (team) => {
 		positionCounts++;
 	}
 
+	// op.gg multiple
+	const players = document.createElement('div');
+	players.innerHTML = playersHTML;
+	let summoners = '';
+	players.querySelectorAll('.opgg-link a').forEach(a => {
+		summoners += a.href.replace('https://www.op.gg/summoners/na/', ',');
+	});
+
 	return `<div class="team col-5">
     ${playersHTML}
     <div class="mt-1 d-flex justify-content-between">
@@ -155,7 +163,7 @@ const generateTeam = (team) => {
         </div>
         <div class="total me-1 text-white">${totalLevels(team)}</div>
     </div>
-    <div class="opgg-all mt-3"><a target="_blank" href="https://www.op.gg/multisearch/na?summoners="><img src="../lib/images/opgg.png"></a></div>
+    <div class="opgg-all mt-3"><a target="_blank" href="https://www.op.gg/multisearch/na?summoners=${summoners.slice(1)}"><img src="../lib/images/opgg.png"></a></div>
 </div>`;
 }
 const vs = () => {
