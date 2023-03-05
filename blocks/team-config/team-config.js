@@ -1,5 +1,4 @@
-import { getRiotAPIKey, capitalize, getLibs } from '/scripts/utils.js';
-import { CONFIG } from '/scripts/scripts.js';
+import { getRiotAPIKey, capitalize } from '/scripts/utils.js';
 
 let API_KEY = '';
 
@@ -216,14 +215,15 @@ const setTierCache = (name, tier) => {
         tiers = JSON.parse(window.localStorage.tiers);
     }
     const _time_now_ = Date.now();
-    tiers[name] = { tier: tier, recorded: _time_now_ };
+    tiers[name.trim().toLowerCase()] = { tier: tier, recorded: _time_now_ };
     window.localStorage.tiers = JSON.stringify(tiers);
 }
 
 const getTierFromCache = (name) => {
     if (window.localStorage.tiers) {
+        name = name.trim().toLowerCase();
         const tiers = JSON.parse(window.localStorage.tiers);
-        if(Date.now() - tiers[name].recorded < 86400000) {
+        if(Date.now() - tiers[name]?.recorded < 86400000) {
             return tiers[name].tier;
         }
     }
@@ -252,21 +252,16 @@ const setTierByInputChange = async (inputEl) => {
     const setOpgg = async () => {
         // tierStr = await getTierFromOpgg(name);
         // if (tierStr) {
-            btn.href = `https://www.op.gg/summoners/na/${name}`;
-            btn.classList.remove('disabled');
-            tierEl.innerHTML = 'OP.GG';
-            return;
+            // btn.href = `https://www.op.gg/summoners/na/${name}`;
+            // btn.classList.remove('disabled');
+            // tierEl.innerHTML = 'OP.GG';
+            // return;
         // }
     };
 
     try {
         const summAPI = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}?api_key=${API_KEY}`;
         const summRes = await fetch(summAPI);
-        
-        if (summRes.status !== 200 && summRes.status !== 404) {
-            setOpgg();
-        }
-
         if(!summRes.ok) {
             tierEl.innerHTML = tierStr;
             btn.classList.add('disabled');
@@ -275,12 +270,7 @@ const setTierByInputChange = async (inputEl) => {
         const summJson = await summRes.json();
         const summId = summJson.id
         const leagueAPI = `https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summId}?api_key=${API_KEY}`;
-        const leagueRes = await fetch(leagueAPI);
-        
-        if (leagueRes.status !== 200 && leagueRes.status !== 404) {
-            setOpgg();
-        }
-        
+        const leagueRes = await fetch(leagueAPI);      
         const leagueJson = await leagueRes.json();
         leagueJson?.forEach(l => {
             if (l.queueType.toLowerCase().includes('solo')) {
@@ -289,11 +279,13 @@ const setTierByInputChange = async (inputEl) => {
         });
         btn.href = `https://www.op.gg/summoners/na/${name}`;
         btn.classList.remove('disabled');
+        setTierCache(name, capitalize(tierStr));
     } catch(err) {
         console.error('Failed to load Riot API', err);
+        tierEl.innerHTML = tierStr;
+        btn.classList.add('disabled');
     }
     tierEl.innerHTML = capitalize(tierStr);
-    setTierCache(name, capitalize(tierStr));
 }
 
 const clearAll = () => {
@@ -363,7 +355,7 @@ const initTeam = () => {
     levelConfig();
     document.querySelector('.trash-icon').addEventListener('click', e => clearAll());
     document.querySelectorAll('.input-participants').forEach(i => setTierByInputChange(i));
-    // document.getElementById('shareLink').addEventListener('click', () => copyState());
+    document.getElementById('shareLink').addEventListener('click', () => copyState());
 
     document.getElementById('bgmSelect').addEventListener('change', e => {
         const audio = document.querySelector('.audio-player audio');
@@ -412,7 +404,7 @@ const teamConfigBody = `
                         <a class="trash-icon px-2 toggle-it" title="Clear all participants">
                             <span><i class="fa fa-trash"></i></span>
                         </a>
-                        <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
+                        <div id="shareLink" class="share-link btn btn-success">Share</div>
                     </div>
                     <div class="level-config col-6 d-flex gap-2"></div>
                 </div>
