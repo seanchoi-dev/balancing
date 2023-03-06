@@ -457,7 +457,7 @@ const importBtnEvent = () => {
         const pList = document.getElementById('import-participant-list').value.split(/\n/);
         const pArray = [];
         let nameInputEl;
-        pList.forEach((value) => {
+        pList.forEach(value => {
             if (!value) return;
             if (value.includes('joined the') || value.includes('님이 로비에 참가')) {
                 if (value.includes('joined the')) {
@@ -473,7 +473,8 @@ const importBtnEvent = () => {
                 }
             }
         });
-        for (let i=0; i<pArray.length && pArray.length < state.numOfPlayers; i++){
+        console.log(state.numOfPlayers);
+        for (let i = 0; i < pArray.length && i < state.numOfPlayers; i++) {
             nameInputEl = document.getElementById(`mix_players_${i}_name`);
             nameInputEl.value = pArray[i];   
             setTierByInputChange(nameInputEl);
