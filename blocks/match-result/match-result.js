@@ -204,13 +204,11 @@ const resultBody = `
     <div class="title nm-as-row py-5 text-center text-white">
         <h1>Get ready for next battle!</h1>
     </div>
-    <div class="bg-dark-t row">
-        <!-- <div class="pb-2"><div id="shareLink" class="share-link btn btn-success">Share</div></div> -->
-    </div>
     <div id="result_row" class="result bg-dark-grey-opacity p-3 row justify-content-between"></div>
 </div>
-<div class="container-fluid rebalance-btn-container p-4 d-flex justify-content-center">
+<div class="container-fluid rebalance-btn-container p-4 d-flex flex-column align-items-center justify-content-center">
     <button class="py-2 px-5 btn btn-primary" onclick="window.location.hash = ''; window.location.hash = '#result';">Rebalance<br><small>(Re-Roll)</small></button>
+	<button id="shareLink" class="share-link btn btn-success mt-2">Copy to share</button>
 </div>
 `;
 
