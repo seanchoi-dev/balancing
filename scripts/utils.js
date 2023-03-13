@@ -41,10 +41,34 @@ export const [setLibs, getLibs] = (() => {
   ];
 })();
 
+const getEnv = () => {
+  const { host } = window.location;
+  if (host.includes('localhost')) {
+    return 'dev';
+  } else if (host.includes('hlx.page')) {
+    return 'page';
+  }
+  else if (host.includes('hlx.live')) {
+    return 'live';
+  }
+  return 'prod';
+};
+
 export const getRiotAPIKey = async () => {
     const res = await fetch('/api-keys.json');
     const json = await res.json();
-    return json.data[0].value;
+    let keyLookUpBy = 'riot-dev';
+    if (getEnv() === 'prod') {
+      keyLookUpBy = 'riot-prod';
+    }
+    let riotKey = '';
+    json.data.forEach(d => {
+      if (keyLookUpBy === d.key) {
+        riotKey = d.value;
+      }
+    });
+    console.log(riotKey);
+    return riotKey;
 }
 
 export const capitalize = ([firstLetter, ...restOfWord]) => firstLetter.toUpperCase() + restOfWord.join("");
