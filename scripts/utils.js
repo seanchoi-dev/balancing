@@ -67,7 +67,7 @@ export const getRiotAPIKey = async () => {
         riotKey = d.value;
       }
     });
-    console.log(riotKey);
+
     return riotKey;
 }
 
