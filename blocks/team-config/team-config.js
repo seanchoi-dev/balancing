@@ -315,7 +315,7 @@ const initTeam = () => {
     levelConfig();
     document.querySelector('.trash-icon').addEventListener('click', e => clearAll());
     document.querySelectorAll('.input-participants').forEach(i => setTierByInputChange(i));
-    document.getElementById('shareLink').addEventListener('click', () => copyState());
+    // document.getElementById('shareLink').addEventListener('click', () => copyState());
 
     document.getElementById('bgmSelect').addEventListener('change', e => {
         const audio = document.querySelector('.audio-player audio');
@@ -339,7 +339,7 @@ const teamConfigBody = `
                     </div>
                     <div class="text-white d-flex align-items-center gap-2">
                         <h5 class="my-1 text-end">${VERSION}</h5>
-                        <a id="releasenote" class="link-info link-block modal" data-modal-hash="#releasenote" data-modal-path="https://main--balancing--seanchoi-dev.hlx.live/fragments/release-note" href="#releasenote">Release Note</a>
+                        <a id="releasenote" class="link-info link-block modal" data-modal-hash="#releasenote" data-modal-path="/fragments/release-note" href="#releasenote">Release Note</a>
                     </div>
                 </div>
             </div>
@@ -360,7 +360,7 @@ const teamConfigBody = `
                         <a class="trash-icon px-2 toggle-it" title="Clear all participants">
                             <span><i class="fa fa-trash"></i></span>
                         </a>
-                        <div id="shareLink" class="share-link btn btn-success">Share</div>
+                        <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
                     </div>
                     <div class="level-config col-6 d-flex gap-2"></div>
                 </div>
@@ -450,5 +450,5 @@ export default async function fn (block) {
     document.querySelector('audio').volume = 0.25;
     const releaseNote = document.getElementById('releasenote');
     const { default: modal } = await import('https://main--milo--adobecom.hlx.live/libs/blocks/modal/modal.js');
-    console.log(modal(releaseNote));
+    modal(releaseNote)
 }
