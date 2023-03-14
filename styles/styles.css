@@ -8,4 +8,16 @@ main .container {
   width: 100%;
 }
 
+div[data-align=center] {
+  text-align: center;
+}
+
+.modal {
+  position: static;
+  overflow: auto;
+  outline: initial;
+  display: block;
+  width: initial;
+  height: initial;
+}
 /* end override milo style */

@@ -10,7 +10,8 @@ header ~ main {
     display: flex;
     justify-content: center;
 }
-.team-config a.modal {
+
+.team-config strong a.modal {
     display: block;
     width: initial;
     position: static;
@@ -29,6 +30,10 @@ header ~ main {
     border: 2px solid var(--color-accent);
     margin: 30px auto;
     box-shadow: 4px 4px 8px #333;
+}
+
+div[data-path="/fragments/release-note"] {
+  padding: 3em;
 }
 
 

@@ -178,37 +178,6 @@ const saveState = () => {
     window.localStorage.state = JSON.stringify(state);
 }
 
-const submitted = () => {
-    let isValid = true;
-    const errMsg = document.querySelector('.error-msg');
-    document.querySelectorAll('.input-error').forEach(i => i.classList.remove('.input-error'));
-    document.querySelectorAll('.participant-div').forEach(p => {
-        const name = p.querySelector('input[type=text]');
-        if(!name.value) {
-            name.classList.add('input-error');
-            errMsg.style.display = 'block';
-            isValid = false;
-            return false;   
-        }
-    });
-    if (isValid) {
-        window.open('./team-match-results.html', '_blank');
-        // window.location = './team-match-results.html'
-    };
-    
-    return false;
-}
-
-const getTierFromOpgg = async (name) => {
-    const url = `https://www.op.gg/summoners/na/${name}`;
-    const res = await fetch(url);
-    const text = await res.text();
-    const template = document.createElement('template');
-    template.innerHTML = text;
-    const tier = template.content.querySelector('.tier')?.textContent || false;
-    return tier;
-}
-
 const setTierCache = (name, tier) => {
     let tiers = {}
     if(window.localStorage.tiers) {
@@ -248,16 +217,6 @@ const setTierByInputChange = async (inputEl) => {
         tierEl.innerHTML = getTierFromCache(name);
         return;
     }
-
-    const setOpgg = async () => {
-        // tierStr = await getTierFromOpgg(name);
-        // if (tierStr) {
-            // btn.href = `https://www.op.gg/summoners/na/${name}`;
-            // btn.classList.remove('disabled');
-            // tierEl.innerHTML = 'OP.GG';
-            // return;
-        // }
-    };
 
     try {
         const summAPI = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}?api_key=${API_KEY}`;
@@ -332,7 +291,7 @@ const copyState = async () => {
 
 const initTeam = () => {
     const { hash } = window.location;
-    if (hash && hash.length > 10) {
+    if (hash && hash.length > 20) {
         window.location.hash = '';
         const encodedState = hash.startsWith('#') ? hash.substring(1) : hash;
         state = parseEncodedState(encodedState);
@@ -380,7 +339,7 @@ const teamConfigBody = `
                     </div>
                     <div class="text-white d-flex align-items-center gap-2">
                         <h5 class="my-1 text-end">${VERSION}</h5>
-                        <a class="link-light" href="#">Release note</a>
+                        <a id="releasenote" class="link-info link-block modal" data-modal-hash="#releasenote" data-modal-path="/fragments/release-note" href="#releasenote">Release Note</a>
                     </div>
                 </div>
             </div>
@@ -489,4 +448,7 @@ export default async function fn (block) {
     block.prepend(configBody);
     initTeam();
     document.querySelector('audio').volume = 0.25;
+    const releaseNote = document.getElementById('releasenote');
+    const { default: modal } = await import('https://main--milo--adobecom.hlx.live/libs/blocks/modal/modal.js');
+    console.log(modal(releaseNote));
 }

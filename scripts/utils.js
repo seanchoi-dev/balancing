@@ -20,7 +20,7 @@
  * The decision engine for where to get Milo's libs from.
  */
 
-export const VERSION = 'Beta v0.931';
+export const VERSION = 'Beta v0.932';
 
 export const [setLibs, getLibs] = (() => {
   let libs;
