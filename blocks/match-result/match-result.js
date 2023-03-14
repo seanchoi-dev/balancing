@@ -177,7 +177,7 @@ const copyState = async (teams) => {
 		let teamIndex = 0;
 		let teamsInfo = '';
 		Object.keys(teams).forEach(t => {
-			teamsInfo += `Team ${++teamIndex}\n`;
+			teamsInfo += `(Team ${++teamIndex})\n`;
 			teams[t].forEach(p => {
 				teamsInfo += `${p.name}\n`;
 			});
