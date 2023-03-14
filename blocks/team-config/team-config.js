@@ -366,7 +366,6 @@ const initTeam = () => {
     });
 };
 
-
 const teamConfigBody = `
 <div class="container">
     <div class="title py-5 text-center text-white"><h1>League of Legend Team Balancing Tool</h1></div>
