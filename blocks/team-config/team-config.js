@@ -378,9 +378,6 @@ const teamConfigBody = `
                         <div class="social-item">
                             <a target="_blank" href="https://discordapp.com/users/390692791241408514"><img class="social-icon" src="../lib/images/discord-icon.svg" alt="discord"></a>
                         </div>
-                        <div class="social-item d-flex">
-                            <a target="_blank" href="https://github.com/seanchoi-dev/seanchoi-dev.github.io"><img class="social-icon" src="../lib/images/github-icon.png" alt="discord"></a>
-                        </div>
                     </div>
                     <div class="text-white d-flex align-items-center gap-2">
                         <h5 class="my-1 text-end">${VERSION}</h5>
