@@ -170,29 +170,23 @@ const vs = () => {
 	return `<div class="vs col-2 text-white d-flex align-items-center justify-content-center"><img src="../lib/images/vs.png"></div>`;
 }
 
-const utf8ToB64 = (str) => window.btoa(unescape(encodeURIComponent(str)));
-const b64ToUtf8 = (str) => decodeURIComponent(escape(window.atob(str)));
-const parseEncodedTeams = (encodedTeams) => {
-	try {
-		return JSON.parse(b64ToUtf8(decodeURIComponent(encodedTeams)));
-	} catch (e) {
-		console.error(e);
-	}
-	return null;
-}
-const getUrl = (teams) => {
-	const url = window.location.href.split('#')[0];
-	teams.levelConfig = state.levelConfig;
-	return `${url}#${utf8ToB64(JSON.stringify(teams))}`;
-};
-
 const copyState = async (teams) => {
-	console.log(state);
+	console.log(teams);
+	if (!Object.keys(teams).length) return;
 	try {
-		const blob = new Blob([getUrl(teams)], { type: 'text/plain' });
+		let teamIndex = 0;
+		let teamsInfo = '';
+		Object.keys(teams).forEach(t => {
+			teamsInfo += `Team ${++teamIndex}\n`;
+			teams[t].forEach(p => {
+				teamsInfo += `${p.name}\n`;
+			});
+			teamsInfo += `${document.querySelectorAll('#result_row .team .opgg-all a')[teamIndex -1].href}\n\n`;
+		});
+		const blob = new Blob([teamsInfo], { type: 'text/plain' });
 		const data = [new ClipboardItem({ [blob.type]: blob })];
 		await navigator.clipboard.write(data);
-		alert('Share URL is copied to clipboard.');
+		alert('Teams\' informations are copied to clipboard.');
 	} catch (err) {
 		console.error(err.name, err.message);
 	}
@@ -204,13 +198,11 @@ const resultBody = `
     <div class="title nm-as-row py-5 text-center text-white">
         <h1>Get ready for next battle!</h1>
     </div>
-    <div class="bg-dark-t row">
-        <!-- <div class="pb-2"><div id="shareLink" class="share-link btn btn-success">Share</div></div> -->
-    </div>
     <div id="result_row" class="result bg-dark-grey-opacity p-3 row justify-content-between"></div>
 </div>
-<div class="container-fluid rebalance-btn-container p-4 d-flex justify-content-center">
+<div class="container-fluid rebalance-btn-container p-4 d-flex flex-column align-items-center justify-content-center">
     <button class="py-2 px-5 btn btn-primary" onclick="window.location.hash = ''; window.location.hash = '#result';">Rebalance<br><small>(Re-Roll)</small></button>
+	<button id="shareLink" class="share-link btn btn-success mt-2">Copy to share</button>
 </div>
 `;
 
@@ -233,6 +225,5 @@ export default async function fn(block) {
 	// console.log(teams, totalLevels(teams.team1), totalLevels(teams.team2));
 	const result = block.querySelector('#result_row');
 	result.innerHTML = generateTeam(teams.team1) + vs() + generateTeam(teams.team2);
-	// document.getElementById('shareLink').addEventListener('click', () => copyState(teams));
+	block.querySelector('#shareLink').addEventListener('click', () => copyState(teams));
 };
-
