@@ -261,7 +261,7 @@ const resultBody = `
 </div>
 <div class="container-fluid rebalance-btn-container p-4 d-flex flex-column align-items-center justify-content-center">
     <button class="py-2 px-5 btn btn-primary" onclick="window.location.hash = ''; window.location.hash = '#result';">Rebalance<br><small>(Re-Roll)</small></button>
-	<button id="shareLink" class="share-link btn btn-success mt-2">Copy to share</button>
+	<!-- <button id="shareLink" class="share-link btn btn-success mt-2">Copy to share</button> -->
 </div>
 `;
 
@@ -284,5 +284,5 @@ export default async function fn(block) {
 	const result = block.querySelector('#result_row');
 	result.innerHTML = generateTeam(teams.team1) + vs() + generateTeam(teams.team2);
 	swapEventHandler(block, teams);
-	block.querySelector('#shareLink').addEventListener('click', () => copyState(teams));
+	// block.querySelector('#shareLink').addEventListener('click', () => copyState(block));
 };
