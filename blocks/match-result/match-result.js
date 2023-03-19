@@ -101,9 +101,9 @@ const getOpggbyName = (name) => {
 
 const generatePlayer = (player) => {
 	let positionsHTML = '';
-	player.position.forEach(p => positionsHTML += `<div class="icon label-position-${p} me-1"></div>`);
+	player.position.forEach(p => positionsHTML += `<div class="icon label-position-${p} me-1" data-position="${p}"></div>`);
 	return `
-    <div class="player mt-3 p-2 d-flex justify-content-between bg-white">
+    <div class="player mt-3 p-2 d-flex justify-content-between gap-3">
         <div class="name py-1">${player.name}</div>
         <div class="position-level d-flex">
             <div class="position d-flex me-2">
@@ -111,7 +111,7 @@ const generatePlayer = (player) => {
             </div>
             <div class="level bg-warning p-1 d-flex justify-content-between">
               <div>${getKeyByValue(state.levelConfig, player.level)}</div>
-              <div><small>(${player.level})</small></div>
+              <div><small>(<span class="level-num">${player.level}</span>)</small></div>
             </div>
             <div class="ps-2 pe-1 opgg-link">${getOpggbyName(player.name) ? `<a target="_blank" href="${getOpggbyName(player.name)}"><img src="../lib/images/opgg.png" draggable="false"></a>`: '<img class="opacity-0" src="../lib/images/opgg.png" draggable="false">'}</div>
         </div>
@@ -171,7 +171,6 @@ const vs = () => {
 }
 
 const copyState = async (teams) => {
-	console.log(teams);
 	if (!Object.keys(teams).length) return;
 	try {
 		let teamIndex = 0;
@@ -191,6 +190,66 @@ const copyState = async (teams) => {
 		console.error(err.name, err.message);
 	}
 	return false;
+}
+
+const swapEventHandler = (block, teams) => {
+	block.querySelectorAll('.player').forEach(p => {
+		p.addEventListener('click', e => {
+			let swap = block.querySelector('.swap');
+			if (swap) {
+				if (p.classList.contains('swap')) {
+					p.classList.remove('swap');
+				} else {
+					// DO SWAP
+					let temp = document.createElement('div');					
+					temp.innerHTML = p.innerHTML;
+					p.innerHTML = swap.innerHTML;
+					swap.innerHTML = temp.innerHTML;
+					block.querySelector('.swap').classList.remove('swap');
+					
+					document.querySelectorAll('.team').forEach((t) => {
+						let total = 0;
+						let coveredPostions = new Set();
+						t.querySelectorAll('.level-num').forEach(n => total += parseInt(n.innerHTML));
+						t.querySelector('.total').innerHTML = total;
+
+						let coveredPostionsHTML = '';
+						let positionCounts = 0;
+						let allCounts = 0;
+						t.querySelectorAll('.position .icon').forEach(position => {
+							coveredPostions.add(position.dataset.position)
+							if (position.dataset.position == 'all') {
+								allCounts++;
+							}
+						});
+						coveredPostions.forEach(position => {
+							coveredPostionsHTML += `<div class="icon label-position-${position} me-1"></div>`
+							positionCounts++;
+						});
+
+						coveredPostions = [...(coveredPostions)].sort((a, b) => {
+							return positionOrder[a] - positionOrder[b];
+						});
+						
+						// For extra All positions
+						for (let i = 0; i < allCounts - 1 && positionCounts < 5; i++) {
+							coveredPostionsHTML += `<div class="icon label-position-all me-1"></div>`;
+							positionCounts++;
+						}
+						const cpEl = t.querySelector('.covered-positions');
+						if (positionCounts >= 5) {
+							cpEl.classList.remove('warning', 'border', 'border-3', 'border-danger');
+						} else {
+							cpEl.classList.add('warning', 'border', 'border-3', 'border-danger');
+						}
+						cpEl.innerHTML = coveredPostionsHTML;
+					});
+				}
+			} else {
+				p.classList.add('swap');
+			}
+		});
+	})
 }
 
 const resultBody = `
@@ -222,8 +281,8 @@ export default async function fn(block) {
 
 	const teams = decodedTeams.team1 ? decodedTeams : balanceTeamsByLevels(state.players);
 
-	// console.log(teams, totalLevels(teams.team1), totalLevels(teams.team2));
 	const result = block.querySelector('#result_row');
 	result.innerHTML = generateTeam(teams.team1) + vs() + generateTeam(teams.team2);
+	swapEventHandler(block, teams);
 	block.querySelector('#shareLink').addEventListener('click', () => copyState(teams));
 };

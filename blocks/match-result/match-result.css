@@ -2,3 +2,21 @@
     max-width: 95vw;
     width: fit-content;
 }
+
+.player {
+    background-color: #fff;
+    cursor: pointer;
+    min-width: 455px;
+}
+
+.player:not(.swap):hover {
+    background-color: var(--bs-teal);
+}
+
+.swap {
+    background-color: var(--bs-pink);
+}
+
+.swap .name {
+    color: #fff;
+}
