@@ -170,15 +170,13 @@ const vs = () => {
 	return `<div class="vs col-2 text-white d-flex align-items-center justify-content-center"><img src="../lib/images/vs.png"></div>`;
 }
 
-const copyState = async (teams) => {
-	if (!Object.keys(teams).length) return;
+const copyState = async (block) => {
 	try {
-		let teamIndex = 0;
 		let teamsInfo = '';
-		Object.keys(teams).forEach(t => {
+		block.querySelectorAll('.team').forEach((t, teamIndex) => {
 			teamsInfo += `(Team ${++teamIndex})\n`;
-			teams[t].forEach(p => {
-				teamsInfo += `${p.name}\n`;
+			t.querySelectorAll('.player .name').forEach(name => {
+				teamsInfo += `${name.textContent}\n`;
 			});
 			teamsInfo += `${document.querySelectorAll('#result_row .team .opgg-all a')[teamIndex -1].href}\n\n`;
 		});
@@ -243,6 +241,10 @@ const swapEventHandler = (block, teams) => {
 							cpEl.classList.add('warning', 'border', 'border-3', 'border-danger');
 						}
 						cpEl.innerHTML = coveredPostionsHTML;
+						
+						let summoners = '';
+						t.querySelectorAll('.player .name').forEach(n => summoners += `,${n.textContent}`);
+						t.querySelector('.opgg-all a').href = `https://www.op.gg/multisearch/na?summoners=${summoners.substring(1)}`;
 					});
 				}
 			} else {
@@ -261,7 +263,7 @@ const resultBody = `
 </div>
 <div class="container-fluid rebalance-btn-container p-4 d-flex flex-column align-items-center justify-content-center">
     <button class="py-2 px-5 btn btn-primary" onclick="window.location.hash = ''; window.location.hash = '#result';">Rebalance<br><small>(Re-Roll)</small></button>
-	<!-- <button id="shareLink" class="share-link btn btn-success mt-2">Copy to share</button> -->
+	<button id="shareLink" class="share-link btn btn-success mt-2">Copy to share</button>
 </div>
 `;
 
@@ -271,7 +273,6 @@ export default async function fn(block) {
 	const { hash } = window.location;
 	let decodedTeams = {};
 	if (hash && hash.length > 10) {
-		// window.location.hash = '';
 		const encodedTeams = hash.startsWith('#') ? hash.substring(1) : hash;
 		decodedTeams = parseEncodedTeams(encodedTeams);
 		state.levelConfig = decodedTeams.levelConfig;
@@ -284,5 +285,5 @@ export default async function fn(block) {
 	const result = block.querySelector('#result_row');
 	result.innerHTML = generateTeam(teams.team1) + vs() + generateTeam(teams.team2);
 	swapEventHandler(block, teams);
-	// block.querySelector('#shareLink').addEventListener('click', () => copyState(block));
+	block.querySelector('#shareLink').addEventListener('click', () => copyState(block));
 };
