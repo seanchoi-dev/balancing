@@ -11,7 +11,6 @@ class Player {
 }
 
 const defaultLevelMap = {
-    I : 0,
     B : 1,
     BS : 2,
     S : 3,
@@ -72,6 +71,19 @@ const getNewParticipant = (index, player) => {
     <div class="col-md-6">
         <div id="mix_players_${index}_level" class="level-participant d-flex gap-2">
             ${levelEls}
+            <select name="level_custom" class="level-custom" aria-label="Handicap / Advantage">
+                <option value="-5">-5</option>
+                <option value="-4">-4</option>
+                <option value="-3">-3</option>
+                <option value="-2">-2</option>
+                <option value="-1">-1</option>
+                <option value="0" selected>0</option>
+                <option value="1">+1</option>
+                <option value="2">+2</option>
+                <option value="3">+3</option>
+                <option value="4">+4</option>
+                <option value="5">+5</option>
+            </select>
         </div>
     </div>
 </div>`;
@@ -102,12 +114,15 @@ const levelConfig = () => {
         configItem.append(input);
         levelConfigEl.append(configItem);
     });
+    const customLabel = document.createElement('div');
+    customLabel.innerHTML = '<small>Handi/<br>Adv</small>';
+    levelConfigEl.append(customLabel);
 };
 
 const addPlayer = (index, player) => {
     const players = document.getElementById('mix_players');
     const div = document.createElement('div');
-    const p = player || new Player('', ['all'], 0);
+    const p = player || new Player('', ['all'], 1);
     div.innerHTML = getNewParticipant(index, p);
     players.append(div);
     div.querySelectorAll('.position-item').forEach(input => input.addEventListener('change', () => {

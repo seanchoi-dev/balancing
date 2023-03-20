@@ -150,7 +150,13 @@ a {
     font-size: 1rem;;
     width: 36px;
     text-align: center;
-  } 
+  }
+
+  select.level-custom {
+    width: 41px;
+    height: 36px;
+    font-size: 14px;
+  }
   
   .participant-div .input-group {
     max-width: 208px;
