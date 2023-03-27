@@ -178,7 +178,7 @@ const copyState = async (block) => {
 			t.querySelectorAll('.player .name').forEach(name => {
 				teamsInfo += `${name.textContent}\n`;
 			});
-			teamsInfo += `${document.querySelectorAll('#result_row .team .opgg-all a')[teamIndex -1].href}\n\n`;
+			teamsInfo += `${t.querySelector('.opgg-all a').href}\n\n`;
 		});
 		const blob = new Blob([teamsInfo], { type: 'text/plain' });
 		const data = [new ClipboardItem({ [blob.type]: blob })];
