@@ -20,7 +20,17 @@
  * The decision engine for where to get Milo's libs from.
  */
 
-export const VERSION = 'Beta v0.941';
+export const getVersion = async () => {
+  const resp = await fetch('/fragments/release-note.plain.html');
+  if (resp.ok) {
+    const html = await resp.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const firstP = doc.querySelector('p');
+    return `v${firstP.textContent.split(' ')[0]}`;
+  }
+  return '';
+}
 
 export const [setLibs, getLibs] = (() => {
   let libs;

@@ -1,4 +1,4 @@
-import { getRiotAPIKey, capitalize, VERSION } from '/scripts/utils.js';
+import { getRiotAPIKey, capitalize, getVersion } from '/scripts/utils.js';
 
 let API_KEY = '';
 
@@ -338,7 +338,7 @@ const teamConfigBody = `
                         </div>
                     </div>
                     <div class="text-white d-flex align-items-center gap-2">
-                        <h5 class="my-1 text-end">${VERSION}</h5>
+                        <h5 class="my-1 text-end">${await getVersion()}</h5>
                         <a id="releasenote" class="link-info link-block modal" data-modal-hash="#releasenote" data-modal-path="/fragments/release-note" href="#releasenote">Release Note</a>
                     </div>
                 </div>
