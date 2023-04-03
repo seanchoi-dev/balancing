@@ -86,3 +86,11 @@ export const capitalize = ([firstLetter, ...restOfWord]) => firstLetter.toUpperC
 export const getKeyByValue = (object, value) => {
     return Object.keys(object).find(key => object[key] === value);
 }
+
+export const roman2arabic = s => {
+  if(!s) {
+    return '';
+  }
+  const map = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000};
+  return [...s].reduce((r,c,i,s) => map[s[i+1]] > map[c] ? r-map[c] : r+map[c], 0);
+};
