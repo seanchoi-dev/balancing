@@ -19,6 +19,21 @@
 /**
  * The decision engine for where to get Milo's libs from.
  */
+export const [setLibs, getLibs] = (() => {
+  let libs;
+  return [
+    (prodLibs, location) => {
+      libs = (() => {
+        const { hostname, search } = location || window.location;
+        if (!(hostname.includes('.hlx.') || hostname.includes('local'))) return prodLibs;
+        const branch = new URLSearchParams(search).get('milolibs') || 'main';
+        if (branch === 'local') return 'http://localhost:6456/libs';
+        return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
+      })();
+      return libs;
+    }, () => libs,
+  ];
+})();
 
 export const getVersion = async () => {
   const resp = await fetch('/fragments/release-note.plain.html');
@@ -31,25 +46,6 @@ export const getVersion = async () => {
   }
   return '';
 }
-
-export const [setLibs, getLibs] = (() => {
-  let libs;
-  return [
-    (prodLibs) => {
-      const { hostname } = window.location;
-//       if (!hostname.includes('hlx.page')
-//         && !hostname.includes('hlx.live')
-//         && !hostname.includes('localhost')) {
-//         libs = prodLibs;
-//         return libs;
-//       }
-      const branch = new URLSearchParams(window.location.search).get('milolibs') || 'main';
-      if (branch === 'local') return 'http://localhost:6456/libs';
-      if (branch.indexOf('--') > -1) return `https://${branch}.hlx.page/libs`;
-      return `https://${branch}--milo--adobecom.hlx.live/libs`;
-    }, () => libs,
-  ];
-})();
 
 const getEnv = () => {
   const { host } = window.location;
