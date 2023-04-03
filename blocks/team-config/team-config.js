@@ -1,4 +1,4 @@
-import { getRiotAPIKey, capitalize, getVersion, roman2arabic } from '/scripts/utils.js';
+import { getRiotAPIKey, capitalize, getVersion } from '/scripts/utils.js';
 
 let API_KEY = '';
 
@@ -199,7 +199,7 @@ const getTierFromCache = (name) => {
     return false;
 }
 
-const setTierByInputChange = async (inputEl, updateLevel = true) => {
+const setTierByInputChange = async (inputEl) => {
     const name = inputEl.value;
     const playerEl = inputEl.closest('.participant-div');
     const btn = playerEl.querySelector('.tier-wrapper a'); 
@@ -211,26 +211,10 @@ const setTierByInputChange = async (inputEl, updateLevel = true) => {
         return;
     }
 
-    const successActions = () => {
-        btn.classList.remove('disabled');
-        tierEl.innerHTML = tierStr;
-        if (!updateLevel || tierStr === 'Unranked') return;
-        let tierLevel = state.levelConfig[tierStr.toUpperCase().charAt(0)] || 1;
-        const tierRank = roman2arabic(tierStr.split(' ')[1]);
-        if (tierRank === 1) {
-            tierLevel++;
-        } else if (tierRank === 4) {
-            tierLevel--;
-        }
-        const levelInput = playerEl.querySelector(`.level-participant input[value="${tierLevel}"]`);
-        const levelLabel = playerEl.querySelector(`.level-participant label[for="${levelInput.id}"]`);
-        levelLabel.click();
-    }
-
     if (getTierFromCache(name)) {
-        tierStr = getTierFromCache(name);
         btn.href = `https://www.op.gg/summoners/na/${name}`;
-        successActions();
+        btn.classList.remove('disabled');
+        tierEl.innerHTML = getTierFromCache(name);
         return;
     }
 
@@ -253,14 +237,14 @@ const setTierByInputChange = async (inputEl, updateLevel = true) => {
             }
         });
         btn.href = `https://www.op.gg/summoners/na/${name}`;
-        successActions();
+        btn.classList.remove('disabled');
         setTierCache(name, capitalize(tierStr));
     } catch(err) {
         console.error('Failed to load Riot API', err);
         tierEl.innerHTML = tierStr;
         btn.classList.add('disabled');
     }
-    tierEl.innerHTML = tierStr;
+    tierEl.innerHTML = capitalize(tierStr);
 }
 
 const clearAll = () => {
@@ -330,7 +314,7 @@ const initTeam = () => {
     numParticipantsEvent();
     levelConfig();
     document.querySelector('.trash-icon').addEventListener('click', e => clearAll());
-    document.querySelectorAll('.input-participants').forEach(i => setTierByInputChange(i, false));
+    document.querySelectorAll('.input-participants').forEach(i => setTierByInputChange(i));
     // document.getElementById('shareLink').addEventListener('click', () => copyState());
 
     document.getElementById('bgmSelect').addEventListener('change', e => {
