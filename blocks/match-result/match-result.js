@@ -1,6 +1,8 @@
 import { getRiotAPIKey, getKeyByValue } from '/scripts/utils.js';
 
 let API_KEY = '';
+const teamsHistory = [];
+let historyIndex = 0;
 
 const positionOrder = {
 	'top': 1,
@@ -262,28 +264,33 @@ const resultBody = `
     <div id="result_row" class="result bg-dark-grey-opacity p-3 row justify-content-between"></div>
 </div>
 <div class="container-fluid rebalance-btn-container p-4 d-flex flex-column align-items-center justify-content-center">
-    <button class="py-2 px-5 btn btn-primary" onclick="window.location.hash = ''; window.location.hash = '#result';">Rebalance<br><small>(Re-Roll)</small></button>
+    <button id="rerollBtn" class="py-2 px-5 btn btn-primary">Rebalance<br><small>(Re-Roll)</small></button>
 	<button id="shareLink" class="share-link btn btn-success mt-2">Copy to share</button>
 </div>
 `;
 
-export default async function fn(block) {
-	API_KEY = await getRiotAPIKey();
-	block.innerHTML = resultBody;
-	const { hash } = window.location;
-	let decodedTeams = {};
-	if (hash && hash.length > 10) {
-		const encodedTeams = hash.startsWith('#') ? hash.substring(1) : hash;
-		decodedTeams = parseEncodedTeams(encodedTeams);
-		state.levelConfig = decodedTeams.levelConfig;
-	} else {
-		state = JSON.parse(window.localStorage.state);
-	}
-
-	const teams = decodedTeams.team1 ? decodedTeams : balanceTeamsByLevels(state.players);
-
+const resultRender = (block, teams) => {
 	const result = block.querySelector('#result_row');
 	result.innerHTML = generateTeam(teams.team1) + vs() + generateTeam(teams.team2);
 	swapEventHandler(block, teams);
+};
+
+const reroll = (block) => {
+	console.log('here')
+	const teams = balanceTeamsByLevels(state.players);
+	teamsHistory.push(teams);
+	resultRender(block, teams);
+	console.log(teamsHistory);
+};
+
+export default async function fn(block) {
+	API_KEY = await getRiotAPIKey();
+	block.innerHTML = resultBody;
+	window.localStorage.removeItem('matchHistory');
+	state = JSON.parse(window.localStorage.state);
+	const teams = balanceTeamsByLevels(state.players);
+	teamsHistory.push(teams);
+	resultRender(block, teams);
 	block.querySelector('#shareLink').addEventListener('click', () => copyState(block));
+	block.querySelector('#rerollBtn').addEventListener('click', () => reroll(block));
 };
