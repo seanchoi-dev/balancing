@@ -1,4 +1,4 @@
-import { getRiotAPIKey, capitalize, getVersion, roman2arabic } from '/scripts/utils.js';
+import { getRiotAPIKey, capitalize, getVersion, roman2arabic, getKeyByValue } from '/scripts/utils.js';
 
 let API_KEY = '';
 
@@ -17,14 +17,14 @@ const defaultLevelMap = {
     S : 3,
     SG : 4,
     G : 5,
-    GP : 6,
-    P : 7,
-    PD : 8,
-    D : 9,
-    DM : 10,
-    M : 11,
-    GM : 12,
-    C : 13,
+    GP : 7,
+    P : 9,
+    PD : 11,
+    D : 13,
+    DM : 16,
+    M : 17,
+    GM : 20,
+    C : 23,
 };
 
 let state = {
@@ -81,6 +81,7 @@ const levelConfig = () => {
     Object.keys(state.levelConfig).forEach(k => {
         const configItem = document.createElement('div');
         configItem.classList.add('d-flex', 'flex-column', 'align-items-center');
+        configItem.dataset.tier = k;
         
         const inputId = `level_config_${k}`;
         
@@ -215,14 +216,14 @@ const setTierByInputChange = async (inputEl, updateLevel = true) => {
         btn.classList.remove('disabled');
         tierEl.innerHTML = tierStr;
         if (!updateLevel || tierStr === 'Unranked') return;
-        let tierLevel = state.levelConfig[tierStr.toUpperCase().charAt(0)] || 1;
-        const tierRank = roman2arabic(tierStr.split(' ')[1]);
+        let tierShort = tierStr.toUpperCase().charAt(0);
+        let tierRank = roman2arabic(tierStr.split(' ')[1]);
         if (tierRank === 1) {
-            tierLevel++;
+            tierRank = document.querySelector(`.level-config div[data-tier=${tierShort}]`).nextSibling.querySelector('input').value;
         } else if (tierRank === 4) {
-            tierLevel--;
+            tierRank = document.querySelector(`.level-config div[data-tier=${tierShort}]`).previousSibling.querySelector('input').value;
         }
-        const levelInput = playerEl.querySelector(`.level-participant input[value="${tierLevel}"]`);
+        const levelInput = playerEl.querySelector(`.level-participant input[value="${tierRank}"]`);
         const levelLabel = playerEl.querySelector(`.level-participant label[for="${levelInput.id}"]`);
         levelLabel.click();
     }
