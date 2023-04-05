@@ -1,8 +1,6 @@
 import { getRiotAPIKey, getKeyByValue } from '/scripts/utils.js';
 
-// let API_KEY = '';
-let teamsHistory = [];
-let historyIndex = 0;
+let teamsHistory = [], historyIndex = 0;
 
 const positionOrder = {
 	'top': 1,
