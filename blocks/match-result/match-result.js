@@ -1,7 +1,7 @@
 import { getRiotAPIKey, getKeyByValue } from '/scripts/utils.js';
 
-let API_KEY = '';
-const teamsHistory = [];
+// let API_KEY = '';
+let teamsHistory = [];
 let historyIndex = 0;
 
 const positionOrder = {
@@ -263,8 +263,12 @@ const resultBody = `
     </div>
     <div id="result_row" class="result bg-dark-grey-opacity p-3 row justify-content-between"></div>
 </div>
-<div class="container-fluid rebalance-btn-container p-4 d-flex flex-column align-items-center justify-content-center">
-    <button id="rerollBtn" class="py-2 px-5 btn btn-primary">Rebalance<br><small>(Re-Roll)</small></button>
+<div class="container-fluid rebalance-btn-container p-5 d-flex flex-column align-items-center justify-content-center">
+	<div class="d-flex">
+		<button id="backBtn" class="btn btn-secondary disabled"><</button>
+		<button id="rerollBtn" class="py-2 px-5 mx-4 btn btn-primary">Rebalance<br><small>(Re-Roll)</small></button>
+		<button id="nextBtn" class="btn btn-secondary disabled">></button>
+	</div>
 	<button id="shareLink" class="share-link btn btn-success mt-2">Copy to share</button>
 </div>
 `;
@@ -275,16 +279,40 @@ const resultRender = (block, teams) => {
 	swapEventHandler(block, teams);
 };
 
-const reroll = (block) => {
-	console.log('here')
-	const teams = balanceTeamsByLevels(state.players);
-	teamsHistory.push(teams);
-	resultRender(block, teams);
-	console.log(teamsHistory);
+const historyHandler = (block, eventName) => {
+	const backBtn = document.getElementById('backBtn');
+	const nextBtn = document.getElementById('nextBtn');
+	let teams;
+	if (eventName === 'reroll') {
+		teams = balanceTeamsByLevels(state.players);
+		teamsHistory.push(teams);
+		historyIndex = teamsHistory.length - 1;
+		resultRender(block, teams);
+		backBtn.classList.remove('disabled');
+		nextBtn.classList.add('disabled');
+	} else if (eventName === 'back') {
+		historyIndex--;
+		teams = teamsHistory[historyIndex];
+		resultRender(block, teams);
+		nextBtn.classList.remove('disabled');
+		if (historyIndex === 0) {
+			backBtn.classList.add('disabled');
+		}
+	} else if (eventName === 'next') {
+		historyIndex++;
+		teams = teamsHistory[historyIndex];
+		resultRender(block, teams);
+		backBtn.classList.remove('disabled');
+		if (historyIndex === teamsHistory.length - 1) {
+			nextBtn.classList.add('disabled');
+		}
+	}
 };
 
 export default async function fn(block) {
-	API_KEY = await getRiotAPIKey();
+	teamsHistory = [];
+	historyIndex = 0;
+	// API_KEY = await getRiotAPIKey();
 	block.innerHTML = resultBody;
 	window.localStorage.removeItem('matchHistory');
 	state = JSON.parse(window.localStorage.state);
@@ -292,5 +320,7 @@ export default async function fn(block) {
 	teamsHistory.push(teams);
 	resultRender(block, teams);
 	block.querySelector('#shareLink').addEventListener('click', () => copyState(block));
-	block.querySelector('#rerollBtn').addEventListener('click', () => reroll(block));
+	block.querySelector('#rerollBtn').addEventListener('click', () => historyHandler(block, 'reroll'));
+	block.querySelector('#backBtn').addEventListener('click', () => historyHandler(block, 'back'));
+	block.querySelector('#nextBtn').addEventListener('click', () => historyHandler(block, 'next'));
 };
