@@ -28,8 +28,6 @@ export const CONFIG = {
   libs: LIBS,
   locales: {
     '': { ietf: 'en-US', tk: 'hah7vzn.css' },
-    de: { ietf: 'de-DE', tk: 'hah7vzn.css' },
-    kr: { ietf: 'ko-KR', tk: 'zfo3ouc' },
   },
 };
 
@@ -60,7 +58,6 @@ const miloLibs = setLibs(LIBS);
 
 (async function loadPage() {
   const { loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
-
   setConfig({ ...CONFIG, miloLibs });
   await loadArea();
   loadDelayed();
