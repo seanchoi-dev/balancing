@@ -1,6 +1,6 @@
-import { getRiotAPIKey, getKeyByValue } from '/scripts/utils.js';
+import { getKeyByValue } from '../../scripts/utils.js';
 
-let teamsHistory = [], historyIndex = 0;
+let teamsHistory = [], historyIndex = 0, state = {};
 
 const positionOrder = {
 	'top': 1,
@@ -10,7 +10,7 @@ const positionOrder = {
 	'support': 5,
 	'all': 6,
 }
-let state = {};
+
 const balanceTeamsByLevels = (players) => {
 	// Shuffle the players array
 	players = shuffle(players);
