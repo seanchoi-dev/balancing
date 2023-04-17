@@ -1,4 +1,4 @@
-import { getRiotAPIKey, capitalize, getVersion, roman2arabic, getKeyByValue } from '/scripts/utils.js';
+import { getRiotAPIKey, capitalize, getVersion, roman2arabic } from '../../scripts/utils.js';
 
 let API_KEY = '';
 
@@ -39,13 +39,14 @@ const getNewParticipant = (index, player) => {
     Object.keys(state.levelConfig).forEach(k => {
         const levelValue = state.levelConfig[k];
         levelEls += `
+        <div class="col-auto px-0">
         <label for="mix_players_${index}_level_${k}" class="${player.level === levelValue ? 'active' : ''}">${k}</label>
         <input type="radio" id="mix_players_${index}_level_${k}" class="level-input level-input-${k} d-none" name="mix.players.${index}.level" required="required" value="${levelValue}" ${player.level === levelValue ? 'checked' : ''}>
-        `
+        </div>`
     });
     return `
-<div id="mix_players__${index}" class="participant-div participant-div-form row mb-2">
-    <div class="col-md-3 d-flex align-items-center">
+<div id="mix_players__${index}" class="participant-div participant-div-form row mb-4 mb-xxl-2">
+    <div class="col-12 col-xxl-3 d-flex align-items-center mb-2 mb-xxl-0">
         <div class="input-group">
             <input type="text" id="mix_players_${index}_name" name="mix.players.${index}.name" class="form-control input-participants" placeholder="Player ${index+1}" value="${player.name}" required>
         </div>
@@ -53,8 +54,8 @@ const getNewParticipant = (index, player) => {
             <a class="btn btn-secondary px-1 ms-1 disabled" target="_blank" href="#"><small class="tier-text">Unranked</small></a>
         </div>
     </div>
-    <div class="col-md-3 positions">
-        <div id="mix_players_${index}_position" class="d-flex align-items-end justify-content-center">
+    <div class="col-12 col-xxl-3 positions mb-2 mb-xxl-0">
+        <div id="mix_players_${index}_position" class="d-flex align-items-end justify-content-xxl-center">
             <label for="position_all_${index}" id="label_position_all_${index}" class="mx-1 label-position label-position-all ${player.position.includes('all') ? 'active' : ''}"></label>
             <input name="mix.players.${index}.position.all" type="checkbox" class="position-item d-none" data-index="${index}" data-position="all" id="position_all_${index}" ${player.position.includes('all') ? 'checked' : ''}>
             <label for="position_top_${index}" id="label_position_top_${index}" class="mx-1 label-position label-position-top ${player.position.includes('top') ? 'active' : ''}"></label>
@@ -69,8 +70,8 @@ const getNewParticipant = (index, player) => {
             <input name="mix.players.${index}.position.support" type="checkbox" class="position-item d-none" data-index="${index}" data-position="support" id="position_support_${index}" ${player.position.includes('support') ? 'checked' : ''}>
         </div>
     </div>
-    <div class="col-md-6">
-        <div id="mix_players_${index}_level" class="level-participant d-flex gap-2">
+    <div class="col-12 col-xxl-6 mb-2 mb-xxl-0">
+        <div id="mix_players_${index}_level" class="level-participant row mx-0 gap-2">
             ${levelEls}
         </div>
     </div>
@@ -80,7 +81,7 @@ const levelConfig = () => {
     const levelConfigEl = document.querySelector('.level-config');
     Object.keys(state.levelConfig).forEach(k => {
         const configItem = document.createElement('div');
-        configItem.classList.add('d-flex', 'flex-column', 'align-items-center');
+        configItem.classList.add('d-flex', 'flex-column', 'align-items-center', 'col-auto', 'px-0');
         configItem.dataset.tier = k;
         
         const inputId = `level_config_${k}`;
@@ -364,7 +365,7 @@ const teamConfigBody = `
         <div class="bg-grey-opacity">
             <div class="container pb-5 position-relative">
                 <div class="general-config row align-items-center py-3 mb-3 border-bottom border-dark">
-                    <div class="form-group col-6 d-flex gap-3 align-items-center">
+                    <div class="form-group col-12 col-xxl-6 mb-2 mb-xxl-0 d-flex gap-3 align-items-center">
                         <select class="head-select px-2" id="nb-participants" control-id="ControlID-3">
                             <option value="6">6</option>
                             <option value="8">8</option>
@@ -379,14 +380,14 @@ const teamConfigBody = `
                         </a>
                         <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
                     </div>
-                    <div class="level-config col-6 d-flex gap-2"></div>
+                    <div class="level-config col-12 col-xxl-6 row gap-2 mx-0"></div>
                 </div>
                 <div id="import-participant" class="form-group collapse">
                     <label for="import-participant-list">Copy and paste a list of participants. One participant per line.</label>
                     <textarea id="import-participant-list" class="form-control textarea-import" rows="10" placeholder="218 님이 로비에 참가하셨습니다.
 YooN2 님이 로비에 참가하셨습니다.
 Mr Winner 님이 로비에 참가하셨습니다.
-Mr PowerBall 님이 로비에 참가하셨습니다.
+Lotto Winner 님이 로비에 참가하셨습니다.
 jiwonnim 님이 로비에 참가하셨습니다.
 NongDamGom joined the lobby
 KG SwitBread joined the lobby
@@ -408,7 +409,7 @@ Youngjin joined the lobby"></textarea>
             </div>
         </div>
     </form>
-    <div class="audio-player">
+    <div class="audio-player d-none d-xxl-block">
         <div class="px-3 pt-3"><small>
             <select name="bgm" id="bgmSelect" class="bgm-select">
                 <option value="https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3">2022 LCK 밴픽 브금 LCK Champ Select BGM</option>
@@ -456,7 +457,7 @@ const importBtnEvent = () => {
             document.querySelector('a.import-icon').click();
         }
     });
-}
+};
 
 export default async function fn (block) {
     API_KEY = await getRiotAPIKey();
@@ -467,5 +468,8 @@ export default async function fn (block) {
     document.querySelector('audio').volume = 0.25;
     const releaseNote = document.getElementById('releasenote');
     const { default: modal } = await import('https://main--milo--adobecom.hlx.live/libs/blocks/modal/modal.js');
-    modal(releaseNote)
+    modal(releaseNote);
+	window.addEventListener('milo:modal:loaded', () => document.querySelector('body').style.overflow = 'hidden');
+    window.addEventListener('milo:modal:closed', () => document.querySelector('body').style.overflow = '');
 }
+
