@@ -155,7 +155,7 @@ const generateTeam = (team) => {
 		summoners += a.href.replace('https://www.op.gg/summoners/na/', ',');
 	});
 
-	return `<div class="team col-5">
+	return `<div class="team col-12 col-lg-6 col-xl-5 mb-3 mb-lg-0">
     ${playersHTML}
     <div class="mt-1 d-flex justify-content-between">
         <div class="covered-positions d-flex mt-2 ${positionCounts < 5 ? 'warning border border-3 border-danger' : ''}">
@@ -167,7 +167,7 @@ const generateTeam = (team) => {
 </div>`;
 }
 const vs = () => {
-	return `<div class="vs col-2 text-white d-flex align-items-center justify-content-center"><img src="../lib/images/vs.png"></div>`;
+	return `<div class="vs col-xl-2 text-white d-none d-xl-flex align-items-center justify-content-center"><img src="../lib/images/vs.png"></div>`;
 }
 
 const copyState = async (block) => {

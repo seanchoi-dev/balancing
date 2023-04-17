@@ -9,7 +9,6 @@
 .player {
     background-color: #fff;
     cursor: pointer;
-    min-width: 455px;
 }
 
 .player:not(.swap):hover {
@@ -26,4 +25,10 @@
 
 .match-result .btn {
     box-shadow: none;
+}
+
+@media (min-width: 576px ){
+    .player {
+        min-width: 455px;
+    }
 }

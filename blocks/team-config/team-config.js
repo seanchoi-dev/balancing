@@ -387,7 +387,7 @@ const teamConfigBody = `
                     <textarea id="import-participant-list" class="form-control textarea-import" rows="10" placeholder="218 님이 로비에 참가하셨습니다.
 YooN2 님이 로비에 참가하셨습니다.
 Mr Winner 님이 로비에 참가하셨습니다.
-Mr PowerBall 님이 로비에 참가하셨습니다.
+Lotto Winner 님이 로비에 참가하셨습니다.
 jiwonnim 님이 로비에 참가하셨습니다.
 NongDamGom joined the lobby
 KG SwitBread joined the lobby
@@ -457,7 +457,7 @@ const importBtnEvent = () => {
             document.querySelector('a.import-icon').click();
         }
     });
-}
+};
 
 export default async function fn (block) {
     API_KEY = await getRiotAPIKey();
@@ -468,6 +468,8 @@ export default async function fn (block) {
     document.querySelector('audio').volume = 0.25;
     const releaseNote = document.getElementById('releasenote');
     const { default: modal } = await import('https://main--milo--adobecom.hlx.live/libs/blocks/modal/modal.js');
-    modal(releaseNote)
+    modal(releaseNote);
+	window.addEventListener('milo:modal:loaded', () => document.querySelector('body').style.overflow = 'hidden');
+    window.addEventListener('milo:modal:closed', () => document.querySelector('body').style.overflow = '');
 }
 
