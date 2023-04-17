@@ -17,14 +17,14 @@ const defaultLevelMap = {
     S : 3,
     SG : 4,
     G : 5,
-    GP : 7,
-    P : 9,
-    PD : 11,
-    D : 13,
-    DM : 16,
-    M : 17,
-    GM : 20,
-    C : 23,
+    GP : 6,
+    P : 7,
+    PD : 8,
+    D : 9,
+    DM : 10,
+    M : 11,
+    GM : 13,
+    C : 15,
 };
 
 let state = {
