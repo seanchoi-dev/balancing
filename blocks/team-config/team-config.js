@@ -352,7 +352,7 @@ const teamConfigBody = `
                 <div class="d-flex py-2 justify-content-between">
                     <div class="socials d-flex gap-2">
                         <div class="social-item">
-                            <a target="_blank" href="https://discordapp.com/users/390692791241408514"><img class="social-icon" src="../lib/images/discord-icon.svg" alt="discord"></a>
+                            <a target="_blank" href="https://discord.gg/f2KVPS2gpj"><img class="social-icon" src="../lib/images/discord-icon.svg" alt="discord"></a>
                         </div>
                     </div>
                     <div class="text-white d-flex align-items-center gap-2">

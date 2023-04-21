@@ -176,7 +176,11 @@ const copyState = async (block) => {
 		block.querySelectorAll('.team').forEach((t, teamIndex) => {
 			teamsInfo += `(Team ${++teamIndex} [${t.querySelector('.total').textContent}])\n`;
 			t.querySelectorAll('.player').forEach(player => {
-				teamsInfo += `${player.querySelector('.name').textContent} [${player.querySelector('.level').textContent.replace(/[\n\r]+|[\s]{2,}/g, ' ').trim()}]\n`;
+				let positions = '';
+				player.querySelectorAll('.position .icon').forEach(position => {
+					positions += position.dataset.position + ' ';
+				});
+				teamsInfo += `${player.querySelector('.name').textContent} [${positions}${player.querySelector('.level-num').textContent}]\n`;
 			});
 			teamsInfo += `${t.querySelector('.opgg-all a').href}\n\n`;
 		});
