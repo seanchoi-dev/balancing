@@ -152,6 +152,11 @@ a {
     text-align: center;
   } 
   
+  .participant-div:hover {
+    background-color: #387ab3a6;
+    transition: background-color .15s ease-in;
+  }
+
   .participant-div .input-group {
     max-width: 208px;
   }
