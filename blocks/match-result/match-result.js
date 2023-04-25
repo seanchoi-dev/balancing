@@ -44,7 +44,7 @@ const balanceTeamsByLevels = (players) => {
 
 	// If the total skill of the two teams is not equal, swap one player between teams
 	const tolerance = 1; // You can adjust this tolerance value
-	const MAX_TRIAL = 100000; // to prevent infinity loop
+	const MAX_TRIAL = 200000; // to prevent infinity loop
 	let trial = 0;
 	while (Math.abs(totalSkill1 - totalSkill2) > tolerance && trial < MAX_TRIAL) {
 		let swapped = false;
