@@ -1,4 +1,4 @@
-import { getRiotAPIKey, capitalize, getVersion, roman2arabic } from '../../scripts/utils.js';
+import { getRiotAPIKey, capitalize, getVersion, roman2arabic, getLibs } from '../../scripts/utils.js';
 
 let API_KEY = '';
 
@@ -466,10 +466,7 @@ export default async function fn (block) {
     block.prepend(configBody);
     initTeam();
     document.querySelector('audio').volume = 0.25;
-    const releaseNote = document.getElementById('releasenote');
-    const { default: modal } = await import('https://main--milo--adobecom.hlx.live/libs/blocks/modal/modal.js');
-    modal(releaseNote);
-	window.addEventListener('milo:modal:loaded', () => document.querySelector('body').style.overflow = 'hidden');
-    window.addEventListener('milo:modal:closed', () => document.querySelector('body').style.overflow = '');
+    const { decorateAutoBlock } = await import(`${getLibs()}/utils/utils.js`);
+    decorateAutoBlock(document.getElementById('releasenote'));
 }
 

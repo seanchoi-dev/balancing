@@ -48,7 +48,11 @@ export const getVersion = async () => {
 }
 
 const getEnv = () => {
-  const { host } = window.location;
+  const { host, search} = window.location;
+  const params = new URLSearchParams(search);
+  if (params.get('env')) {
+    return params.get('env');
+  }
   if (host.includes('localhost')) {
     return 'dev';
   } else if (host.includes('hlx.page')) {
