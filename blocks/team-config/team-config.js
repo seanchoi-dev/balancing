@@ -201,7 +201,7 @@ const getTierFromCache = (name) => {
     return false;
 }
 
-const setTierByInputChange = async (inputEl, updateLevel = true) => {
+const setTierByInputChange = (inputEl, updateLevel = true) => {
     const name = inputEl.value;
     const playerEl = inputEl.closest('.participant-div');
     const btn = playerEl.querySelector('.tier-wrapper a'); 
@@ -236,32 +236,32 @@ const setTierByInputChange = async (inputEl, updateLevel = true) => {
         return;
     }
 
-    try {
-        const summAPI = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}?api_key=${API_KEY}`;
-        const summRes = await fetch(summAPI);
-        if(!summRes.ok) {
+    const summAPI = `https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${name}?api_key=${API_KEY}`;
+    fetch(summAPI)
+        .then((res) => res.json())
+        .then((summJson) => {
+            const summId = summJson.id
+            const leagueAPI = `https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summId}?api_key=${API_KEY}`;
+            fetch(leagueAPI)
+                .then((leagueRes) => leagueRes.json())
+                .then((leagueJson) => {
+                    leagueJson?.forEach(l => {
+                        if (l.queueType.toLowerCase().includes('solo')) {
+                            tierStr = `${l.tier.toLowerCase()} ${l.rank}`;
+                        }
+                    });
+                    btn.href = `https://www.op.gg/summoners/na/${name}`;
+                    successActions();
+                    setTierCache(name, capitalize(tierStr));
+                })
+                .catch(console.error);
+        })
+        .catch ((err) => {
+            console.error('Failed to load Riot API', err);
             tierEl.innerHTML = tierStr;
             btn.classList.add('disabled');
-            return;
-        };
-        const summJson = await summRes.json();
-        const summId = summJson.id
-        const leagueAPI = `https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${summId}?api_key=${API_KEY}`;
-        const leagueRes = await fetch(leagueAPI);      
-        const leagueJson = await leagueRes.json();
-        leagueJson?.forEach(l => {
-            if (l.queueType.toLowerCase().includes('solo')) {
-                tierStr = `${l.tier.toLowerCase()} ${l.rank}`;
-            }
         });
-        btn.href = `https://www.op.gg/summoners/na/${name}`;
-        successActions();
-        setTierCache(name, capitalize(tierStr));
-    } catch(err) {
-        console.error('Failed to load Riot API', err);
-        tierEl.innerHTML = tierStr;
-        btn.classList.add('disabled');
-    }
+        
     tierEl.innerHTML = tierStr;
 }
 
@@ -332,7 +332,7 @@ const initTeam = () => {
     numParticipantsEvent();
     levelConfig();
     document.querySelector('.trash-icon').addEventListener('click', e => clearAll());
-    document.querySelectorAll('.input-participants').forEach(i => setTierByInputChange(i, false));
+    document.querySelectorAll('.input-participants').forEach(i => setTierByInputChange(i, true));
     // document.getElementById('shareLink').addEventListener('click', () => copyState());
 
     document.getElementById('bgmSelect').addEventListener('change', e => {
