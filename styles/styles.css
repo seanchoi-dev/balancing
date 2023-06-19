@@ -21,3 +21,7 @@ div[data-align=center] {
   height: initial;
 }
 /* end override milo style */
+
+:root {
+  --lb-orange: #f97352;
+}

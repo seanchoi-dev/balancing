@@ -26,8 +26,8 @@ header ~ main {
     font-style: normal;
     font-weight: 700;
     color: #FFF;
-    background: var(--color-accent);
-    border: 2px solid var(--color-accent);
+    background: var(--lb-orange);
+    border: 2px solid var(--lb-orange);
     margin: 30px auto;
     box-shadow: 4px 4px 8px #333;
 }
@@ -49,7 +49,7 @@ a {
   label:active,
   label:focus,
   label.active {
-    background-color: #f97352;
+    background-color: var(--bs-blue);
     color: #fff;
   }
   .head-label:hover {
@@ -182,7 +182,7 @@ a {
   .team-config {
     position: relative;
     z-index: 1;
-    background-image: url('/lib/images/bg1.jpg');
+    background-image: url('/lib/images/porobg.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -208,7 +208,7 @@ a {
     font-weight: normal;
   }
   .icon {
-    background-color: #f97352;
+    background-color: var(--bs-blue);
     background-position: center;
     background-repeat: no-repeat;
     width: 35px;

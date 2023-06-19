@@ -4,6 +4,12 @@
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    border: 2px solid #fff;
+    border-radius: 30px;
+}
+
+.dialog-modal button.dialog-close {
+    right: 12.5px;
 }
 
 .player {

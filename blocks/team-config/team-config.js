@@ -459,14 +459,17 @@ const importBtnEvent = () => {
     });
 };
 
-export default async function fn (block) {
+export default async function init (block) {
+    const { loadScript, loadStyle, decorateAutoBlock } = await import(`${getLibs()}/utils/utils.js`);
+    loadStyle('/deps/bootstrap.min.css');
+    loadStyle('/deps/font-awesome.min.css');
     API_KEY = await getRiotAPIKey();
     const configBody = document.createElement('div');
     configBody.innerHTML = teamConfigBody;
     block.prepend(configBody);
     initTeam();
     document.querySelector('audio').volume = 0.25;
-    const { decorateAutoBlock } = await import(`${getLibs()}/utils/utils.js`);
     decorateAutoBlock(document.getElementById('releasenote'));
+    await loadScript('/deps/bootstrap.bundle.min.js');    
 }
 
