@@ -385,8 +385,8 @@ export default async function init (block) {
     loadStyle('/deps/font-awesome.min.css');
     API_KEY = await getRiotAPIKey();
     const configBody = document.createElement('div');
-    
     configBody.innerHTML = teamConfigBody?.textContent;
+    configBody.querySelector('#version').textContent = await getVersion();
     block.prepend(configBody);
     initTeam();
     // document.querySelector('audio').volume = 0.25;
