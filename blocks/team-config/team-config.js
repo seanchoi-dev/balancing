@@ -45,8 +45,8 @@ const getNewParticipant = (index, player) => {
         </div>`
     });
     return `
-<div id="mix_players__${index}" class="participant-div participant-div-form row mb-4 mb-xxl-2">
-    <div class="col-12 col-xxl-3 d-flex align-items-center mb-2 mb-xxl-0">
+<div id="mix_players__${index}" class="participant-div participant-div-form row mb-4 mb-xl-2">
+    <div class="col-12 col-xl-3 d-flex align-items-center mb-2 mb-xl-0">
         <div class="input-group">
             <input type="text" id="mix_players_${index}_name" name="mix.players.${index}.name" class="form-control input-participants" placeholder="Player ${index+1}" value="${player.name}" required>
         </div>
@@ -54,8 +54,8 @@ const getNewParticipant = (index, player) => {
             <a class="btn btn-secondary px-1 ms-1 disabled" target="_blank" href="#"><small class="tier-text">Unranked</small></a>
         </div>
     </div>
-    <div class="col-12 col-xxl-3 positions mb-2 mb-xxl-0">
-        <div id="mix_players_${index}_position" class="d-flex align-items-end justify-content-xxl-center">
+    <div class="col-12 col-xl-3 positions mb-2 mb-xl-0">
+        <div id="mix_players_${index}_position" class="d-flex align-items-end justify-content-xl-center">
             <label for="position_all_${index}" id="label_position_all_${index}" class="mx-1 label-position label-position-all ${player.position.includes('all') ? 'active' : ''}"></label>
             <input name="mix.players.${index}.position.all" type="checkbox" class="position-item d-none" data-index="${index}" data-position="all" id="position_all_${index}" ${player.position.includes('all') ? 'checked' : ''}>
             <label for="position_top_${index}" id="label_position_top_${index}" class="mx-1 label-position label-position-top ${player.position.includes('top') ? 'active' : ''}"></label>
@@ -70,7 +70,7 @@ const getNewParticipant = (index, player) => {
             <input name="mix.players.${index}.position.support" type="checkbox" class="position-item d-none" data-index="${index}" data-position="support" id="position_support_${index}" ${player.position.includes('support') ? 'checked' : ''}>
         </div>
     </div>
-    <div class="col-12 col-xxl-6 mb-2 mb-xxl-0">
+    <div class="col-12 col-xl-6 mb-2 mb-xl-0">
         <div id="mix_players_${index}_level" class="level-participant row mx-0 gap-2">
             ${levelEls}
         </div>
@@ -307,6 +307,41 @@ const copyState = async () => {
     return false;
 }
 
+const importBtnEvent = () => {
+    const importBtn = document.getElementById('import-p-button');
+    importBtn.addEventListener('click', () => {
+        const pList = document.getElementById('import-participant-list').value.split(/\n/);
+        const pArray = [];
+        let nameInputEl;
+        pList.forEach(value => {
+            if (!value) return;
+            if (value.includes('joined the') || value.includes('님이 로비에 참가')) {
+                if (value.includes('joined the')) {
+                    pArray.push(value.split(' joined the')[0]);
+                } else {
+                    pArray.push(value.split(' 님이 로비에 참가')[0]);
+                }
+            } else if (value.includes('left the') || value.includes('님이 로비를 떠났')) { //Remove if player left lobby
+                for (let j=0; j < pArray.length; j++){
+                    if(pArray[j] == value.split(' 님이 로비를 떠났')[0] || pArray[j] == value.split(' left the')[0]) {
+                        pArray.splice(j, 1);
+                    }
+                }
+            }
+        });
+        
+        for (let i = 0; i < pArray.length && i < state.numOfPlayers; i++) {
+            nameInputEl = document.getElementById(`mix_players_${i}_name`);
+            nameInputEl.value = pArray[i];   
+            setTierByInputChange(nameInputEl);
+        }
+        saveState();
+        if (pArray.length > 0) {
+            document.querySelector('a.import-icon').click();
+        }
+    });
+};
+
 const initTeam = () => {
     const { hash } = window.location;
     if (hash && hash.length > 20) {
@@ -343,135 +378,19 @@ const initTeam = () => {
     });
 };
 
-const teamConfigBody = `
-<div class="container">
-    <div class="title py-5 text-center text-white"><h1>League of Legend Team Balancing Tool</h1></div>
-    <form id="mix_form" name="mix" autocomplete="on" onsubmit="return submitted()">
-        <div class="bg-dark-grey-opacity">
-            <div class="container">
-                <div class="d-flex py-2 justify-content-between">
-                    <div class="socials d-flex gap-2">
-                        <div class="social-item">
-                            <a target="_blank" href="https://discord.gg/f2KVPS2gpj"><img class="social-icon" src="../lib/images/discord-icon.svg" alt="discord"></a>
-                        </div>
-                    </div>
-                    <div class="text-white d-flex align-items-center gap-2">
-                        <h5 class="my-1 text-end">${await getVersion()}</h5>
-                        <a id="releasenote" class="link-info link-block modal" data-modal-hash="#releasenote" data-modal-path="/fragments/release-note" href="#releasenote">Release Note</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="bg-grey-opacity">
-            <div class="container pb-5 position-relative">
-                <div class="general-config row align-items-center py-3 mb-3 border-bottom border-dark">
-                    <div class="form-group col-12 col-xxl-6 mb-2 mb-xxl-0 d-flex gap-3 align-items-center">
-                        <select class="head-select px-2" id="nb-participants" control-id="ControlID-3">
-                            <option value="6">6</option>
-                            <option value="8">8</option>
-                            <option value="10" selected>10</option>
-                        </select>
-                        <label for="nb-participants" class="head-label ps-2">Participants</label>
-                        <a class="import-icon toggle-it" data-bs-toggle="collapse" href="#import-participant" role="button" aria-expanded="false" aria-controls="import-participant">
-                            <span><i class="fa fa-clipboard"></i></span>
-                        </a>
-                        <a class="trash-icon px-2 toggle-it" title="Clear all participants">
-                            <span><i class="fa fa-trash"></i></span>
-                        </a>
-                        <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
-                    </div>
-                    <div class="level-config col-12 col-xxl-6 row gap-2 mx-0"></div>
-                </div>
-                <div id="import-participant" class="form-group collapse">
-                    <label for="import-participant-list">Copy and paste a list of participants. One participant per line.</label>
-                    <textarea id="import-participant-list" class="form-control textarea-import" rows="10" placeholder="218 님이 로비에 참가하셨습니다.
-YooN2 님이 로비에 참가하셨습니다.
-Mr Winner 님이 로비에 참가하셨습니다.
-Lotto Winner 님이 로비에 참가하셨습니다.
-jiwonnim 님이 로비에 참가하셨습니다.
-NongDamGom joined the lobby
-KG SwitBread joined the lobby
-Sero joined the lobby
-Elo joined the lobby
-Youngjin joined the lobby"></textarea>
-                    <a id="import-p-button" class="btn btn-secondary mt-2 mb-4">Import Participants</a>
-                </div>
-                <div id="mix_players"></div>
-                <div
-                    class="padding-top ad-div">
-                    <!-- leaderboard-bottom -->
-                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7854142479910574" data-ad-slot="1275355822" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                    <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
-                <div class="error-msg text-danger" style="display: none;">Fill out player's <strong>Name</strong>.</div>                      
-            </div>
-        </div>
-    </form>
-    <!--
-    <div class="audio-player d-none d-xxl-block">
-        <div class="px-3 pt-3"><small>
-            <select name="bgm" id="bgmSelect" class="bgm-select">
-                <option value="https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3">2022 LCK 밴픽 브금 LCK Champ Select BGM</option>
-                <option value="https://seanchoi-dev.github.io/lib/audios/Take%20Over%20-%20Worlds%202020.mp3">Take Over - Worlds 2020.mp3</option>
-            </select>
-        </small></div>
-        <audio controls loop>
-            <source id = 'bgmSource' src='https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3'/>
-            <embed src= 'https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3' loop='loop'/>
-        </audio>
-    </div>
-    -->
-</div>
-`;
-
-const importBtnEvent = () => {
-    const importBtn = document.getElementById('import-p-button');
-    importBtn.addEventListener('click', () => {
-        const pList = document.getElementById('import-participant-list').value.split(/\n/);
-        const pArray = [];
-        let nameInputEl;
-        pList.forEach(value => {
-            if (!value) return;
-            if (value.includes('joined the') || value.includes('님이 로비에 참가')) {
-                if (value.includes('joined the')) {
-                    pArray.push(value.split(' joined the')[0]);
-                } else {
-                    pArray.push(value.split(' 님이 로비에 참가')[0]);
-                }
-            } else if (value.includes('left the') || value.includes('님이 로비를 떠났')) { //Remove if player left lobby
-                for (let j=0; j < pArray.length; j++){
-                    if(pArray[j] == value.split(' 님이 로비를 떠났')[0] || pArray[j] == value.split(' left the')[0]) {
-                        pArray.splice(j, 1);
-                    }
-                }
-            }
-        });
-        
-        for (let i = 0; i < pArray.length && i < state.numOfPlayers; i++) {
-            nameInputEl = document.getElementById(`mix_players_${i}_name`);
-            nameInputEl.value = pArray[i];   
-            setTierByInputChange(nameInputEl);
-        }
-        saveState();
-        if (pArray.length > 0) {
-            document.querySelector('a.import-icon').click();
-        }
-    });
-};
-
 export default async function init (block) {
+    const teamConfigBody = block.querySelector('code');
     const { loadScript, loadStyle, decorateAutoBlock } = await import(`${getLibs()}/utils/utils.js`);
     loadStyle('/deps/bootstrap.min.css');
     loadStyle('/deps/font-awesome.min.css');
     API_KEY = await getRiotAPIKey();
     const configBody = document.createElement('div');
-    configBody.innerHTML = teamConfigBody;
+    
+    configBody.innerHTML = teamConfigBody?.textContent;
     block.prepend(configBody);
     initTeam();
     // document.querySelector('audio').volume = 0.25;
     decorateAutoBlock(document.getElementById('releasenote'));
-    // await loadScript('/deps/bootstrap.bundle.min.js');    
+    await loadScript('/deps/bootstrap.bundle.min.js');    
 }
 
