@@ -60,5 +60,6 @@ const miloLibs = setLibs(LIBS);
   const { loadArea, loadDelayed, setConfig } = await import(`${miloLibs}/utils/utils.js`);
   setConfig({ ...CONFIG, miloLibs });
   await loadArea();
+  document.querySelector('main').classList.add('loaded');
   loadDelayed();
 }());
