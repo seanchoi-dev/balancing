@@ -335,7 +335,7 @@ const initTeam = () => {
     document.querySelectorAll('.input-participants').forEach(i => setTierByInputChange(i, true));
     // document.getElementById('shareLink').addEventListener('click', () => copyState());
 
-    document.getElementById('bgmSelect').addEventListener('change', e => {
+    document.getElementById('bgmSelect')?.addEventListener('change', e => {
         const audio = document.querySelector('.audio-player audio');
         audio.querySelector('source').src = e.target.value;
         audio.load();
@@ -409,6 +409,7 @@ Youngjin joined the lobby"></textarea>
             </div>
         </div>
     </form>
+    <!--
     <div class="audio-player d-none d-xxl-block">
         <div class="px-3 pt-3"><small>
             <select name="bgm" id="bgmSelect" class="bgm-select">
@@ -421,6 +422,7 @@ Youngjin joined the lobby"></textarea>
             <embed src= 'https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3' loop='loop'/>
         </audio>
     </div>
+    -->
 </div>
 `;
 
@@ -468,8 +470,8 @@ export default async function init (block) {
     configBody.innerHTML = teamConfigBody;
     block.prepend(configBody);
     initTeam();
-    document.querySelector('audio').volume = 0.25;
+    // document.querySelector('audio').volume = 0.25;
     decorateAutoBlock(document.getElementById('releasenote'));
-    await loadScript('/deps/bootstrap.bundle.min.js');    
+    // await loadScript('/deps/bootstrap.bundle.min.js');    
 }
 
