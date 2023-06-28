@@ -15,11 +15,8 @@ header ~ main {
     display: block;
     width: initial;
     position: static;
-    text-align: center;
-    display: inline-block;
-    text-decoration: none;
-    line-height: 1.2;
     font-style: normal;
+    height: auto;
 }
 
 .team-config strong a.modal {
@@ -29,11 +26,14 @@ header ~ main {
   border-radius: 8px;
   font-weight: 700;
   margin: 30px auto;
-
   font-size: 18px;
   background: var(--lb-orange);
   border: 2px solid var(--lb-orange);
   box-shadow: 4px 4px 8px #333;
+  line-height: 1.2;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
 }
 
 div[data-path="/fragments/release-note"] {
