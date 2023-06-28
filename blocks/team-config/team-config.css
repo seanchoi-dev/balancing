@@ -11,25 +11,29 @@ header ~ main {
     justify-content: center;
 }
 
-.team-config strong a.modal {
+.team-config a.modal {
     display: block;
     width: initial;
     position: static;
-    text-align: center;
-    border-radius: 8px;
-    display: inline-block;
-    padding: 14px 24px;
-    min-height: 28px;
-    text-decoration: none;
-    font-size: 18px;
-    line-height: 1.2;
     font-style: normal;
-    font-weight: 700;
-    color: #FFF;
-    background: var(--lb-orange);
-    border: 2px solid var(--lb-orange);
-    margin: 30px auto;
-    box-shadow: 4px 4px 8px #333;
+    height: auto;
+}
+
+.team-config strong a.modal {
+  color: #FFF;
+  padding: 14px 24px;
+  min-height: 28px;
+  border-radius: 8px;
+  font-weight: 700;
+  margin: 30px auto;
+  font-size: 18px;
+  background: var(--lb-orange);
+  border: 2px solid var(--lb-orange);
+  box-shadow: 4px 4px 8px #333;
+  line-height: 1.2;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
 }
 
 div[data-path="/fragments/release-note"] {
