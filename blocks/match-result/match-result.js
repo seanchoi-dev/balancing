@@ -271,7 +271,7 @@ const resultBody = `
 		<button id="rerollBtn" class="py-2 px-5 mx-4 btn btn-primary">Rebalance<br><small>(Re-Roll)</small></button>
 		<button id="nextBtn" class="btn btn-secondary disabled">></button>
 	</div>
-	<button id="shareLink" class="share-link btn btn-success mt-2">Copy to share</button>
+	<button id="shareLink" class="share-link btn btn-dark mt-2">Copy to share</button>
 </div>
 `;
 
