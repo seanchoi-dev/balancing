@@ -187,7 +187,7 @@ const copyState = async (block) => {
 		const blob = new Blob([teamsInfo], { type: 'text/plain' });
 		const data = [new ClipboardItem({ [blob.type]: blob })];
 		await navigator.clipboard.write(data);
-		alert('Teams\' informations are copied to clipboard.');
+		block.querySelector('.copy-message').textContent = 'Teams\' informations are copied to clipboard.';
 	} catch (err) {
 		console.error(err.name, err.message);
 	}
@@ -272,6 +272,7 @@ const resultBody = `
 		<button id="nextBtn" class="btn btn-secondary disabled">></button>
 	</div>
 	<button id="shareLink" class="share-link btn btn-dark mt-2">Copy to share</button>
+	<div class="copy-message text-success"></div>
 </div>
 `;
 

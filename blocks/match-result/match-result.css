@@ -33,6 +33,10 @@
     box-shadow: none;
 }
 
+.copy-message {
+    min-height: 24px;
+}
+
 @media (min-width: 576px ){
     .player {
         min-width: 455px;
