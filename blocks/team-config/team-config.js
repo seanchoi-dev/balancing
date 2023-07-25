@@ -109,7 +109,7 @@ const levelConfig = () => {
 const addPlayer = (index, player) => {
     const players = document.getElementById('mix_players');
     const div = document.createElement('div');
-    const p = player || new Player('', ['all'], 0);
+    const p = player || new Player('', ['all'], 1);
     div.innerHTML = getNewParticipant(index, p);
     players.append(div);
     div.querySelectorAll('.position-item').forEach(input => input.addEventListener('change', () => {
