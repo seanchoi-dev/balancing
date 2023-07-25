@@ -11,20 +11,20 @@ class Player {
 }
 
 const defaultLevelMap = {
-    I : 0,
     B : 1,
-    BS : 2,
     S : 3,
     SG : 4,
     G : 5,
     GP : 6,
     P : 7,
-    PD : 8,
-    D : 9,
-    DM : 10,
-    M : 11,
-    GM : 13,
-    C : 15,
+    PE: 8,
+    E: 9,
+    ED : 10,
+    D : 11,
+    DM : 12,
+    M : 13,
+    GM : 15,
+    C : 17,
 };
 
 let state = {
