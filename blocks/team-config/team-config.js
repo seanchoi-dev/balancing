@@ -354,6 +354,9 @@ const initTeam = () => {
         if (!state.levelConfig) {
             state.levelConfig = defaultLevelMap;
         }
+        else if(!state.levelConfig.E) {
+            state.levelConfig = defaultLevelMap;
+        }
     }
     const players = state.players;
     if (players.length) {
