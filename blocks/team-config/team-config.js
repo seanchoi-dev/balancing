@@ -212,14 +212,14 @@ const getSimpleTierText = (tier, rank) => {
     return `${tier[0]}${rank}`;
 };
 
-const setTierByInputChange = async (inputEls = [], updateIndex = 'all', updateOn = true) => {
+const setTierByInputChange = async (inputEls = [], updateIndex = 'all', updateOn = false) => {
     const accountAPIPromises = [];
     inputEls.forEach(inputEl => {
         const inputValue = inputEl.value.split('#');
         const gameName = inputValue[0].trim();
         const tagLine = inputValue[1]?.trim();
         if (!tagLine) return;
-        if (!updateOn) {
+        if (updateOn) {
             
         }
         accountAPIPromises.push(fetch(`https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${API_KEY}`));
