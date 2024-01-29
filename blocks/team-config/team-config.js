@@ -165,7 +165,6 @@ const addPlayer = (index, player) => {
         saveState();
     }));
     div.querySelectorAll('.input-participants').forEach(i => i.addEventListener('change', () => {
-        saveState();
         setTierByInputChange([i], i);
     }));
     div.querySelectorAll('.level-input').forEach(i => {
@@ -219,9 +218,6 @@ const setTierByInputChange = async (inputEls = [], updateIndex = 'all', updateOn
         const gameName = inputValue[0].trim();
         const tagLine = inputValue[1]?.trim();
         if (!tagLine) return;
-        if (updateOn) {
-            
-        }
         accountAPIPromises.push(fetch(`https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${API_KEY}`));
     });
     const accountAPIPromisesRes = await Promise.all(accountAPIPromises);
@@ -247,6 +243,7 @@ const setTierByInputChange = async (inputEls = [], updateIndex = 'all', updateOn
             btn.classList.remove('disabled');
         })
     }
+    saveState();
 };
 
 const clearAll = () => {
