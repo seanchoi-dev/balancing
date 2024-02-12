@@ -212,15 +212,20 @@ const getSimpleTierText = (tier, rank) => {
     return `${tier[0]}${rank}`;
 };
 
-const setTierByInputChange = async (inputEls = [], updateIndex = 'all', updateOn = false) => {
+const setTierByInputChange = async (inputEls = [], targetInput = 'all') => {
     const accountAPIPromises = [];
     inputEls.forEach(inputEl => {
         const inputValue = inputEl.value.split('#');
         const gameName = inputValue[0].trim();
         const tagLine = inputValue[1]?.trim();
-        if (!tagLine) return;
-        if (updateOn) {
-            
+        if (!tagLine) {
+            const playerEl = inputEl.closest('.participant-div');
+            const btn = playerEl.querySelector('.tier-wrapper a');
+            const tierEl = playerEl.querySelector('.tier-text');
+            btn.href = '#';
+            btn.classList.add('disabled');
+            tierEl.innerHTML = 'Not Found';
+            return;
         }
         accountAPIPromises.push(fetch(`https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${API_KEY}`));
     });
@@ -230,7 +235,7 @@ const setTierByInputChange = async (inputEls = [], updateIndex = 'all', updateOn
     const summonerAPIPromisesResJson = await Promise.all(summonerAPIPromisesRes.map(r => r.json()));
     const leagueBySumAPIPromisesRes = await Promise.all(summonerAPIPromisesResJson.map(j => fetch(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${j.id}?api_key=${API_KEY}`)));
     const leagueBySumAPIPromisesResJson = await Promise.all(leagueBySumAPIPromisesRes.map(r => r.json()));
-    if (updateIndex === 'all') {
+    if (targetInput === 'all') {
         document.querySelectorAll('.input-participants:not([value=""])').forEach((inputEl, index) => {
             if (leagueBySumAPIPromisesResJson[index].status) return;
             const playerEl = inputEl.closest('.participant-div');
@@ -245,7 +250,21 @@ const setTierByInputChange = async (inputEls = [], updateIndex = 'all', updateOn
             tierEl.innerHTML = `${soloRank} | ${flexRank}`;
             btn.href = `https://www.op.gg/summoners/na/${accountAPIPromisesResJson[index].gameName}-${accountAPIPromisesResJson[index].tagLine}`;
             btn.classList.remove('disabled');
-        })
+        });
+    } else {
+        if (leagueBySumAPIPromisesResJson[0].status) return;
+        const playerEl = targetInput.closest('.participant-div');
+        const btn = playerEl.querySelector('.tier-wrapper a');
+        const tierEl = playerEl.querySelector('.tier-text');
+        let soloRank = 'UR';
+        let flexRank = 'UR';
+        leagueBySumAPIPromisesResJson[0].forEach(league => {
+            if (league.queueType.includes('SOLO')) soloRank = getSimpleTierText(league.tier, league.rank);
+            if (league.queueType.includes('FLEX')) flexRank = getSimpleTierText(league.tier, league.rank);
+        });
+        tierEl.innerHTML = `${soloRank} | ${flexRank}`;
+        btn.href = `https://www.op.gg/summoners/na/${accountAPIPromisesResJson[0].gameName}-${accountAPIPromisesResJson[0].tagLine}`;
+        btn.classList.remove('disabled');
     }
 };
 
