@@ -344,7 +344,7 @@ const importBtnEvent = () => {
             nameInputEl.value = pArray[i];
             nameInputEls.push(nameInputEl);
         }
-        // setTierByInputChange(nameInputEls);
+        setTierByInputChange(nameInputEls);
         saveState();
         if (pArray.length > 0) {
             document.querySelector('a.import-icon').click();
