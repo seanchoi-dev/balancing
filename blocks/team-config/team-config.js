@@ -216,6 +216,7 @@ const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
     const leagueBySumAPIPromisesResJson = await Promise.all(leagueBySumAPIPromisesRes.map(r => r.json()));
     if (targetInput === 'all') {
         document.querySelectorAll('.input-participants').forEach((inputEl, index) => {
+            if (!inputEl.value) return;
             if (leagueBySumAPIPromisesResJson[index].status) return;
             const playerEl = inputEl.closest('.participant-div');
             const btn = playerEl.querySelector('.tier-wrapper a');
