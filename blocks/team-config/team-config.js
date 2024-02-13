@@ -172,9 +172,7 @@ const addPlayer = (index, player) => {
         i.addEventListener('change', e => {
             div.querySelectorAll('.level-input').forEach(ii => {
                 ii.previousElementSibling.classList.remove('active');
-                if (ii.checked) {
-                    ii.previousElementSibling.classList.add('active');
-                }
+                if (ii.checked) ii.previousElementSibling.classList.add('active');
             });
             saveState();
         });
@@ -212,23 +210,7 @@ const getSimpleTierText = (tier, rank) => {
     return `${tier[0]}${rank}`;
 };
 
-const setTierByInputChange = async (inputEls = [], targetInput = 'all') => {
-    const accountAPIPromises = [];
-    inputEls.forEach(inputEl => {
-        const inputValue = inputEl.value.split('#');
-        const gameName = inputValue[0].trim();
-        const tagLine = inputValue[1]?.trim();
-        if (!tagLine) {
-            const playerEl = inputEl.closest('.participant-div');
-            const btn = playerEl.querySelector('.tier-wrapper a');
-            const tierEl = playerEl.querySelector('.tier-text');
-            btn.href = '#';
-            btn.classList.add('disabled');
-            tierEl.innerHTML = 'Not Found';
-            return;
-        }
-        accountAPIPromises.push(fetch(`https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${API_KEY}`));
-    });
+const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
     const accountAPIPromisesRes = await Promise.all(accountAPIPromises);
     const accountAPIPromisesResJson = await Promise.all(accountAPIPromisesRes.map(r => r.json()));
     const summonerAPIPromisesRes = await Promise.all(accountAPIPromisesResJson.map(j => fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${j.puuid}?api_key=${API_KEY}`)));
@@ -266,6 +248,27 @@ const setTierByInputChange = async (inputEls = [], targetInput = 'all') => {
         btn.href = `https://www.op.gg/summoners/na/${accountAPIPromisesResJson[0].gameName}-${accountAPIPromisesResJson[0].tagLine}`;
         btn.classList.remove('disabled');
     }
+    saveState();
+}
+
+const setTierByInputChange = async (inputEls = [], targetInput = 'all') => {
+    const accountAPIPromises = [];
+    inputEls.forEach(inputEl => {
+        const inputValue = inputEl.value.split('#');
+        const gameName = inputValue[0].trim();
+        const tagLine = inputValue[1]?.trim();
+        if (!tagLine) {
+            const playerEl = inputEl.closest('.participant-div');
+            const btn = playerEl.querySelector('.tier-wrapper a');
+            const tierEl = playerEl.querySelector('.tier-text');
+            btn.href = '#';
+            btn.classList.add('disabled');
+            tierEl.innerHTML = 'Not Found';
+            return;
+        }
+        accountAPIPromises.push(fetch(`https://lolbalance-api.newnesid.workers.dev/api/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${API_KEY}`));
+    });
+    updateTiersbyRiotAPI(accountAPIPromises, targetInput);
 };
 
 const clearAll = () => {
