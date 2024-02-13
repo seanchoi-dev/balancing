@@ -164,10 +164,7 @@ const addPlayer = (index, player) => {
         label.classList.toggle('active');
         saveState();
     }));
-    div.querySelectorAll('.input-participants').forEach(i => i.addEventListener('change', () => {
-        saveState();
-        setTierByInputChange([i], i);
-    }));
+    div.querySelectorAll('.input-participants').forEach(i => i.addEventListener('change', () => setTierByInputChange([i], i)));
     div.querySelectorAll('.level-input').forEach(i => {
         i.addEventListener('change', e => {
             div.querySelectorAll('.level-input').forEach(ii => {
@@ -218,7 +215,7 @@ const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
     const leagueBySumAPIPromisesRes = await Promise.all(summonerAPIPromisesResJson.map(j => fetch(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${j.id}?api_key=${API_KEY}`)));
     const leagueBySumAPIPromisesResJson = await Promise.all(leagueBySumAPIPromisesRes.map(r => r.json()));
     if (targetInput === 'all') {
-        document.querySelectorAll('.input-participants:not([value=""])').forEach((inputEl, index) => {
+        document.querySelectorAll('.input-participants').forEach((inputEl, index) => {
             if (leagueBySumAPIPromisesResJson[index].status) return;
             const playerEl = inputEl.closest('.participant-div');
             const btn = playerEl.querySelector('.tier-wrapper a');
@@ -341,7 +338,7 @@ const importBtnEvent = () => {
             nameInputEl.value = pArray[i];
             nameInputEls.push(nameInputEl);
         }
-        setTierByInputChange(nameInputEls);
+        // setTierByInputChange(nameInputEls);
         saveState();
         if (pArray.length > 0) {
             document.querySelector('a.import-icon').click();
