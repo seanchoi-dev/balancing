@@ -215,7 +215,12 @@ const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
     const leagueBySumAPIPromisesRes = await Promise.all(summonerAPIPromisesResJson.map(j => fetch(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${j.id}?api_key=${API_KEY}`)));
     const leagueBySumAPIPromisesResJson = await Promise.all(leagueBySumAPIPromisesRes.map(r => r.json()));
     if (targetInput === 'all') {
-        console.log(document.querySelectorAll('.input-participants:not([value=""])'), document.querySelectorAll('.input-participants'));
+       
+        console.log(document.querySelectorAll('.input-participants:not([value=""])'),
+        document.querySelectorAll('.input-participants'),
+        document.querySelectorAll('.input-participants')[0].value,
+        document.querySelectorAll('.input-participants[value="EUNBO #NA1"]'));
+
         document.querySelectorAll('.input-participants:not([value=""])').forEach((inputEl, index) => {
             if (leagueBySumAPIPromisesResJson[index].status) return;
             const playerEl = inputEl.closest('.participant-div');
