@@ -85,7 +85,7 @@ const getNewParticipant = (index, player) => {
 <div id="mix_players__${index}" class="participant-div participant-div-form row mb-4 mb-xl-2">
     <div class="col-12 col-xl-3 d-flex align-items-center mb-2 mb-xl-0">
         <div class="input-group">
-            <input type="text" id="mix_players_${index}_name" name="mix.players.${index}.name" class="form-control input-participants" placeholder="Player ${index+1}" value="${player.name}" required>
+            <input type="text" id="mix_players_${index}_name" name="mix.players.${index}.name" class="form-control input-participants ${player.name ? '' : 'no-value'}" placeholder="Player ${index+1}" value="${player.name}" required>
         </div>
         <div class="tier-wrapper">
             <a class="btn btn-secondary px-1 ms-1 ${!player.tierText || player.tierText === 'Not Found' ? 'disabled' : ''}" target="_blank" href="${player.btnHref || '#'}"><small class="tier-text">${player.tierText || 'Not Found'}</small></a>
@@ -164,7 +164,12 @@ const addPlayer = (index, player) => {
         label.classList.toggle('active');
         saveState();
     }));
-    div.querySelectorAll('.input-participants').forEach(i => i.addEventListener('change', () => setTierByInputChange([i], i)));
+    div.querySelectorAll('.input-participants').forEach(i => i.addEventListener('change', () => {
+        saveState();
+        if (i.value) i.classList.remove('no-value')
+        else i.classList.add('no-value');
+        setTierByInputChange([i], i)}
+        ));
     div.querySelectorAll('.level-input').forEach(i => {
         i.addEventListener('change', e => {
             div.querySelectorAll('.level-input').forEach(ii => {
@@ -215,13 +220,7 @@ const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
     const leagueBySumAPIPromisesRes = await Promise.all(summonerAPIPromisesResJson.map(j => fetch(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${j.id}?api_key=${API_KEY}`)));
     const leagueBySumAPIPromisesResJson = await Promise.all(leagueBySumAPIPromisesRes.map(r => r.json()));
     if (targetInput === 'all') {
-       
-        console.log(document.querySelectorAll('.input-participants:not([value=""])'),
-        document.querySelectorAll('.input-participants'),
-        document.querySelectorAll('.input-participants')[0].value,
-        document.querySelectorAll('.input-participants[value="EUNBO #NA1"]'));
-
-        document.querySelectorAll('.input-participants:not([value=""])').forEach((inputEl, index) => {
+        document.querySelectorAll('.input-participants:not(.no-value)').forEach((inputEl, index) => {
             if (leagueBySumAPIPromisesResJson[index].status) return;
             const playerEl = inputEl.closest('.participant-div');
             const btn = playerEl.querySelector('.tier-wrapper a');
