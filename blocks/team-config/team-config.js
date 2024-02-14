@@ -341,6 +341,7 @@ const importBtnEvent = () => {
         for (let i = 0; i < pArray.length && i < state.numOfPlayers; i++) {
             nameInputEl = document.getElementById(`mix_players_${i}_name`);
             nameInputEl.value = pArray[i];
+            nameInputEl.classList.remove('no-value');
             nameInputEls.push(nameInputEl);
         }
         setTierByInputChange(nameInputEls);
