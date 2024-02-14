@@ -88,17 +88,6 @@ const totalLevels = (team) => {
 	return sum;
 }
 
-const getOpggbyName = (name) => {
-	if (window.localStorage.tiers) {
-        name = name.trim().toLowerCase();
-        const tiers = JSON.parse(window.localStorage.tiers);
-        if (tiers[name]) {
-			return `https://www.op.gg/summoners/na/${name}`;
-		}
-    }
-    return false;
-}
-
 const generatePlayer = (player) => {
 	let positionsHTML = '';
 	player.position.forEach(p => positionsHTML += `<div class="icon label-position-${p} me-1" data-position="${p}"></div>`);
@@ -113,7 +102,6 @@ const generatePlayer = (player) => {
               <div>${getKeyByValue(state.levelConfig, player.level)}</div>
               <div><small>(<span class="level-num">${player.level}</span>)</small></div>
             </div>
-            <div class="ps-2 pe-1 opgg-link">${getOpggbyName(player.name) ? `<a target="_blank" href="${getOpggbyName(player.name)}"><img src="../lib/images/opgg.png" draggable="false"></a>`: '<img class="opacity-0" src="../lib/images/opgg.png" draggable="false">'}</div>
         </div>
     </div>`;
 };
@@ -151,8 +139,8 @@ const generateTeam = (team) => {
 	const players = document.createElement('div');
 	players.innerHTML = playersHTML;
 	let summoners = '';
-	players.querySelectorAll('.opgg-link a').forEach(a => {
-		summoners += a.href.replace('https://www.op.gg/summoners/na/', ',');
+	players.querySelectorAll('.name').forEach(name => {
+		summoners += `,${name.textContent}`;
 	});
 
 	return `<div class="team col-12 col-lg-6 col-xl-5 mb-3 mb-lg-0">
@@ -163,7 +151,7 @@ const generateTeam = (team) => {
         </div>
         <div class="total me-1 text-white">${totalLevels(team)}</div>
     </div>
-    <div class="opgg-all mt-3"><a target="_blank" href="https://www.op.gg/multisearch/na?summoners=${summoners.slice(1)}"><img src="../lib/images/opgg.png"></a></div>
+    <div class="opgg-all mt-3"><a target="_blank" href="https://www.op.gg/multisearch/na?summoners=${encodeURIComponent(summoners.substring(1))}"><img src="../lib/images/opgg.png"></a></div>
 </div>`;
 }
 const vs = () => {
