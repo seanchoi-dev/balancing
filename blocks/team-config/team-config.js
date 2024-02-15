@@ -9,6 +9,7 @@ class Player {
         this.level = level;
         this.tierText = tierText;
         this.btnHref = btnHref;
+        this.cached = false;
     }    
 }
 
@@ -82,7 +83,7 @@ const getNewParticipant = (index, player) => {
         </div>`
     });
     return `
-<div id="mix_players__${index}" class="participant-div participant-div-form row mb-4 mb-xl-2">
+<div id="mix_players__${index}" class="participant-div ${player.cached ? 'cached' : ''} participant-div-form row mb-4 mb-xl-2">
     <div class="col-12 col-xl-3 d-flex align-items-center mb-2 mb-xl-0">
         <div class="input-group">
             <input type="text" id="mix_players_${index}_name" name="mix.players.${index}.name" class="form-control input-participants ${player.name ? '' : 'no-value'}" placeholder="Player ${index+1}" value="${player.name}" required>
@@ -165,9 +166,11 @@ const addPlayer = (index, player) => {
         saveState();
     }));
     div.querySelectorAll('.input-participants').forEach(i => i.addEventListener('change', () => {
+        const playerEl = i.closest('.participant-div');
+        playerEl.classList.remove('cached');
         saveState();
-        if (i.value) i.classList.remove('no-value')
-        else i.classList.add('no-value');
+        i.classList.add('no-value');
+        if (i.value) i.classList.remove('no-value');
         setTierByInputChange([i], i)}
         ));
     div.querySelectorAll('.level-input').forEach(i => {
@@ -215,40 +218,40 @@ const getSimpleTierText = (tier, rank) => {
 const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
     const accountAPIPromisesRes = await Promise.all(accountAPIPromises);
     const accountAPIPromisesResJson = await Promise.all(accountAPIPromisesRes.map(r => r.json()));
+    console.log(accountAPIPromisesResJson[0]);
+    if (accountAPIPromisesResJson[0]?.status) {
+        const playerEl = targetInput.closest('.participant-div');
+        const btn = playerEl.querySelector('.tier-wrapper a');
+        const tierEl = playerEl.querySelector('.tier-text');
+        tierEl.innerHTML = 'Not Found';
+        btn.href = '#';
+        btn.classList.add('disabled');
+        return;
+    }
     const summonerAPIPromisesRes = await Promise.all(accountAPIPromisesResJson.map(j => fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${j.puuid}?api_key=${API_KEY}`)));
     const summonerAPIPromisesResJson = await Promise.all(summonerAPIPromisesRes.map(r => r.json()));
     const leagueBySumAPIPromisesRes = await Promise.all(summonerAPIPromisesResJson.map(j => fetch(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${j.id}?api_key=${API_KEY}`)));
     const leagueBySumAPIPromisesResJson = await Promise.all(leagueBySumAPIPromisesRes.map(r => r.json()));
-    if (targetInput === 'all') {
-        document.querySelectorAll('.input-participants:not(.no-value)').forEach((inputEl, index) => {
-            if (leagueBySumAPIPromisesResJson[index].status) return;
-            const playerEl = inputEl.closest('.participant-div');
-            const btn = playerEl.querySelector('.tier-wrapper a');
-            const tierEl = playerEl.querySelector('.tier-text');
-            let soloRank = 'UR';
-            let flexRank = 'UR';
-            leagueBySumAPIPromisesResJson[index].forEach(league => {
-                if (league.queueType.includes('SOLO')) soloRank = getSimpleTierText(league.tier, league.rank);
-                if (league.queueType.includes('FLEX')) flexRank = getSimpleTierText(league.tier, league.rank);
-            });
-            tierEl.innerHTML = `${soloRank} | ${flexRank}`;
-            btn.href = `https://www.op.gg/summoners/na/${accountAPIPromisesResJson[index].gameName}-${accountAPIPromisesResJson[index].tagLine}`;
-            btn.classList.remove('disabled');
-        });
-    } else {
-        if (leagueBySumAPIPromisesResJson[0].status) return;
-        const playerEl = targetInput.closest('.participant-div');
+    const updateTier = (inputEl, index) => {
+        const playerEl = inputEl.closest('.participant-div');
         const btn = playerEl.querySelector('.tier-wrapper a');
         const tierEl = playerEl.querySelector('.tier-text');
         let soloRank = 'UR';
         let flexRank = 'UR';
-        leagueBySumAPIPromisesResJson[0].forEach(league => {
+        leagueBySumAPIPromisesResJson[index]?.forEach(league => {
             if (league.queueType.includes('SOLO')) soloRank = getSimpleTierText(league.tier, league.rank);
             if (league.queueType.includes('FLEX')) flexRank = getSimpleTierText(league.tier, league.rank);
         });
         tierEl.innerHTML = `${soloRank} | ${flexRank}`;
-        btn.href = `https://www.op.gg/summoners/na/${accountAPIPromisesResJson[0].gameName}-${accountAPIPromisesResJson[0].tagLine}`;
+        btn.href = `https://www.op.gg/summoners/na/${accountAPIPromisesResJson[index].gameName}-${accountAPIPromisesResJson[index].tagLine}`;
         btn.classList.remove('disabled');
+    }
+    if (targetInput === 'all') {
+        document.querySelectorAll('.input-participants:not(.no-value)').forEach((inputEl, index) => {
+            updateTier(inputEl, index);
+        });
+    } else {
+        updateTier(targetInput, 0);
     }
     saveState();
 }
@@ -256,11 +259,12 @@ const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
 const setTierByInputChange = async (inputEls = [], targetInput = 'all') => {
     const accountAPIPromises = [];
     inputEls.forEach(inputEl => {
+        const playerEl = inputEl.closest('.participant-div');
+        if (playerEl.classList.contains('cached')) return;
         const inputValue = inputEl.value.split('#');
         const gameName = inputValue[0].trim();
         const tagLine = inputValue[1]?.trim();
         if (!tagLine) {
-            const playerEl = inputEl.closest('.participant-div');
             const btn = playerEl.querySelector('.tier-wrapper a');
             const tierEl = playerEl.querySelector('.tier-text');
             btn.href = '#';
@@ -372,6 +376,8 @@ const initTeam = () => {
     if (players.length) {
         players.forEach((p, i) => {
             p.tierText = getTierFromCache(p.name);
+            p.cached = true;
+            if (!p.tierText || p.tierText === 'Not Found') p.cached = false;
             addPlayer(i, p)
         });
     } else {
