@@ -253,14 +253,17 @@ const resultBody = `
     </div>
     <div id="result_row" class="result bg-dark-grey-opacity p-3 row justify-content-between"></div>
 </div>
-<div class="container-fluid rebalance-btn-container p-5 d-flex flex-column align-items-center justify-content-center">
-	<div class="d-flex">
+<div class="container-fluid rebalance-btn-container position-relative p-5 d-flex flex-column align-items-center justify-content-center">
+	<div class="position-absolute copy-message text-success"></div>
+	<div class="d-flex mb-2">
 		<button id="backBtn" class="btn btn-secondary disabled"><</button>
 		<button id="rerollBtn" class="py-2 px-5 mx-4 btn btn-primary">Rebalance<br><small>(Re-Roll)</small></button>
 		<button id="nextBtn" class="btn btn-secondary disabled">></button>
+	</div>	
+	<div class="d-flex gap-2">
+		<button id="shareLink" class="share-link btn btn-dark">Copy to share</button>
+		<a class="btn btn-dark" href="https://draftlol.dawe.gg/" target="_blank">Pick Ban Tool</a>
 	</div>
-	<button id="shareLink" class="share-link btn btn-dark mt-2">Copy to share</button>
-	<div class="copy-message text-success"></div>
 </div>
 `;
 
