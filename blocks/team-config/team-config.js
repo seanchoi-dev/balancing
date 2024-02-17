@@ -218,7 +218,6 @@ const getSimpleTierText = (tier, rank) => {
 const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
     const accountAPIPromisesRes = await Promise.all(accountAPIPromises);
     const accountAPIPromisesResJson = await Promise.all(accountAPIPromisesRes.map(r => r.json()));
-    console.log(accountAPIPromisesResJson[0]);
     if (accountAPIPromisesResJson[0]?.status) {
         const playerEl = targetInput.closest('.participant-div');
         const btn = playerEl.querySelector('.tier-wrapper a');
@@ -274,7 +273,7 @@ const setTierByInputChange = async (inputEls = [], targetInput = 'all') => {
         }
         accountAPIPromises.push(fetch(`https://lolbalance-api.newnesid.workers.dev/api/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${API_KEY}`));
     });
-    updateTiersbyRiotAPI(accountAPIPromises, targetInput);
+    if (accountAPIPromises.length) updateTiersbyRiotAPI(accountAPIPromises, targetInput);
 };
 
 const clearAll = () => {
