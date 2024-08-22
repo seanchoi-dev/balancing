@@ -425,5 +425,4 @@ export default async function init (block) {
     initTeam();
     // document.querySelector('audio').volume = 0.25;
     decorateAutoBlock(document.getElementById('releasenote'));
-    await loadScript('/deps/bootstrap.bundle.min.js');    
 }
