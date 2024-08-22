@@ -67,6 +67,6 @@ const miloLibs = setLibs(LIBS);
   setConfig({ ...CONFIG, miloLibs });
   await loadArea();
   document.querySelector('main').classList.add('loaded');
-  loadDelayed();
+  await loadDelayed();
   loadScript('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5415420348816979');
 }());
