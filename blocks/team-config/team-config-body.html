@@ -20,12 +20,31 @@
             <div class="container pb-5 position-relative">
                 <div class="general-config row align-items-center py-3 mb-3 border-bottom border-dark">
                     <div class="form-group col-12 col-xl-6 mb-2 mb-xl-0 d-flex gap-3 align-items-center">
+                        <select id="region">
+                            <option value="BR1">BR1</option>
+                            <option value="EUN1">EUN1</option>
+                            <option value="EUW1">EUW1</option>
+                            <option value="JP1">JP1</option>
+                            <option value="KR">KR</option>
+                            <option value="LA1">LA1</option>
+                            <option value="LA2">LA2</option>
+                            <option value="ME1">ME1</option>
+                            <option value="NA1" selected="true">NA1</option>
+                            <option value="OC1">OC1</option>
+                            <option value="PH2">PH2</option>
+                            <option value="RU">RU</option>
+                            <option value="SG2">SG2</option>
+                            <option value="TH2">TH2</option>
+                            <option value="TR1">TR1</option>
+                            <option value="TW2">TW2</option>
+                            <option value="VN2">VN2</option>                            
+                        </select>
                         <select class="head-select px-2" id="nb-participants" control-id="ControlID-3">
                             <option value="6">6</option>
                             <option value="8">8</option>
                             <option value="10" selected>10</option>
                         </select>
-                        <label for="nb-participants" class="head-label ps-2">Participants</label>
+                        <label for="nb-participants" class="head-label">Participants</label>
                         <a class="import-icon toggle-it" data-bs-toggle="collapse" href="#import-participant" role="button" aria-expanded="false" aria-controls="import-participant">
                             <span><i class="fa fa-clipboard"></i></span>
                         </a>
