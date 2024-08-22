@@ -417,8 +417,6 @@ const initTeam = () => {
 export default async function init (block) {
     const teamConfigBody = block.querySelector('code');
     const { loadScript, loadStyle, decorateAutoBlock } = await import(`${getLibs()}/utils/utils.js`);
-    loadStyle('/deps/bootstrap.min.css');
-    loadStyle('/deps/font-awesome.min.css');
     API_KEY = await getRiotAPIKey();
     const configBody = document.createElement('div');
     configBody.innerHTML = teamConfigBody?.textContent;
