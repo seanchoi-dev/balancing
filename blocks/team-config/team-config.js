@@ -428,7 +428,7 @@ export default async function init (block) {
       h1Body.classList.add('title', 'py-5', 'text-center', 'text-white');
       h1Body.append(h1);
       block.prepend(h1Body);
-      h1.style.display = 'block';
+      // h1.style.display = 'block';
     }
     initTeam();
     // document.querySelector('audio').volume = 0.25;
