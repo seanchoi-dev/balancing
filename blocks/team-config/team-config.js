@@ -486,7 +486,7 @@ const teamConfigBody = `
                         <a class="import-icon toggle-it" data-bs-toggle="collapse" href="#import-participant" role="button" aria-expanded="false" aria-controls="import-participant">
                             <span><button class="btn btn-success" aria-label="Import button">Import</button></span>
                         </a>
-                        <a class="trash-icon px-2 toggle-it" title="Clear all participants">
+                        <a class="trash-icon px-2 toggle-it" href="#clean-up" title="Clear all participants">
                             <span><button class="btn btn-danger" aria-label="Clean up button">Clean up</button></span>
                         </a>
                         <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
