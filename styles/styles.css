@@ -5,6 +5,10 @@ main {
   opacity: 0;
 }
 
+main h1 {
+  display: none;
+}
+
 main picture img {
   position: absolute;
   top: 0;

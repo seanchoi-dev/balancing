@@ -416,13 +416,12 @@ const initTeam = () => {
 
 export default async function init (block) {
     const h1 = block.querySelector('h1');
-    const teamConfigBody = block.querySelector('code');
     const { loadScript, loadStyle, decorateAutoBlock } = await import(`${getLibs()}/utils/utils.js`);
     loadStyle('/deps/bootstrap.min.css');
     loadStyle('/deps/font-awesome.min.css');
     API_KEY = await getRiotAPIKey();
     const configBody = document.createElement('div');
-    configBody.innerHTML = teamConfigBody?.textContent;
+    configBody.innerHTML = teamConfigBody;
     configBody.querySelector('#version').textContent = await getVersion();
     block.prepend(configBody);
     if(h1) {
@@ -430,9 +429,111 @@ export default async function init (block) {
       h1Body.classList.add('title', 'py-5', 'text-center', 'text-white');
       h1Body.append(h1);
       block.prepend(h1Body);
+      h1.style.display = 'block';
     }
     initTeam();
     // document.querySelector('audio').volume = 0.25;
     decorateAutoBlock(document.getElementById('releasenote'));
     loadScript('/deps/bootstrap.bundle.min.js');    
 }
+
+const teamConfigBody = `
+<div class="container">
+    <form id="mix_form" name="mix" autocomplete="on" onsubmit="return submitted()">
+        <div class="bg-dark-grey-opacity">
+            <div class="container">
+                <div class="d-flex py-2 justify-content-between">
+                    <div class="socials d-flex gap-2">
+                        <div class="social-item">
+                            <a target="_blank" class="link-light link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover" href="https://discord.gg/f2KVPS2gpj"><img class="social-icon me-2" width="30px" height="30px" src="../lib/images/discord-icon.svg" alt="discord">Support</a>
+                        </div>
+                    </div>
+                    <div class="text-white d-flex align-items-center gap-2">
+                        <h5 id="version" class="my-1 text-end"></h5>
+                        <a id="releasenote" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover modal" data-modal-hash="#releasenote" data-modal-path="/fragments/release-note" href="#releasenote">Release Note</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-grey-opacity">
+            <div class="container pb-5 position-relative">
+                <div class="general-config row align-items-center py-3 mb-3 border-bottom border-dark">
+                    <div class="form-group col-12 col-xl-6 mb-2 mb-xl-0 d-flex gap-3 align-items-center">
+                        <select id="region">
+                            <option value="BR1">BR1</option>
+                            <option value="EUN1">EUN1</option>
+                            <option value="EUW1">EUW1</option>
+                            <option value="JP1">JP1</option>
+                            <option value="KR">KR</option>
+                            <option value="LA1">LA1</option>
+                            <option value="LA2">LA2</option>
+                            <option value="ME1">ME1</option>
+                            <option value="NA1" selected="true">NA1</option>
+                            <option value="OC1">OC1</option>
+                            <option value="PH2">PH2</option>
+                            <option value="RU">RU</option>
+                            <option value="SG2">SG2</option>
+                            <option value="TH2">TH2</option>
+                            <option value="TR1">TR1</option>
+                            <option value="TW2">TW2</option>
+                            <option value="VN2">VN2</option>                            
+                        </select>
+                        <select class="head-select px-2" id="nb-participants" control-id="ControlID-3">
+                            <option value="6">6</option>
+                            <option value="8">8</option>
+                            <option value="10" selected>10</option>
+                        </select>
+                        <label for="nb-participants" class="head-label">Participants</label>
+                        <a class="import-icon toggle-it" data-bs-toggle="collapse" href="#import-participant" role="button" aria-expanded="false" aria-controls="import-participant">
+                            <span><i class="fa fa-clipboard"></i></span>
+                        </a>
+                        <a class="trash-icon px-2 toggle-it" title="Clear all participants">
+                            <span><i class="fa fa-trash"></i></span>
+                        </a>
+                        <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
+                    </div>
+                    <div class="level-config col-12 col-xl-6 row gap-2 mx-0"></div>
+                </div>
+                <div id="import-participant" class="form-group collapse">
+                    <label for="import-participant-list">Copy and paste a list of participants. One participant per line.</label>
+                    <textarea id="import-participant-list" class="form-control textarea-import" rows="10" placeholder="218 님이 로비에 참가하셨습니다.
+YooN2 님이 로비에 참가하셨습니다.
+Mr Winner 님이 로비에 참가하셨습니다.
+Lotto Winner 님이 로비에 참가하셨습니다.
+jiwonnim 님이 로비에 참가하셨습니다.
+NongDamGom joined the lobby
+KG SwitBread joined the lobby
+Sero joined the lobby
+Elo joined the lobby
+Youngjin joined the lobby"></textarea>
+                    <a id="import-p-button" class="btn btn-secondary mt-2 mb-4">Import Participants</a>
+                </div>
+                <div id="mix_players"></div>
+                <div
+                    class="padding-top ad-div">
+                    <!-- leaderboard-bottom -->
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7854142479910574" data-ad-slot="1275355822" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+                <div class="error-msg text-danger" style="display: none;">Fill out player's <strong>Name</strong>.</div>                      
+            </div>
+        </div>
+    </form>
+    <!--
+    <div class="audio-player d-none d-xl-block">
+        <div class="px-3 pt-3"><small>
+            <select name="bgm" id="bgmSelect" class="bgm-select">
+                <option value="https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3">2022 LCK 밴픽 브금 LCK Champ Select BGM</option>
+                <option value="https://seanchoi-dev.github.io/lib/audios/Take%20Over%20-%20Worlds%202020.mp3">Take Over - Worlds 2020.mp3</option>
+            </select>
+        </small></div>
+        <audio controls loop>
+            <source id = 'bgmSource' src='https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3'/>
+            <embed src= 'https://seanchoi-dev.github.io/lib/audios/2022 LCK 밴픽 브금  LCK Champ Select BGM.mp3' loop='loop'/>
+        </audio>
+    </div>
+    -->
+</div>
+`;
