@@ -9,6 +9,10 @@
     background-color: #00000080;
 }
 
+#releasenote {
+    background-color: #fff;
+}
+
 .dialog-modal button.dialog-close {
     right: 12.5px;
 }
