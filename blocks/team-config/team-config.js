@@ -485,10 +485,10 @@ const teamConfigBody = `
                         </select>
                         <label for="nb-participants" class="head-label">Participants</label>
                         <a class="import-icon toggle-it" data-bs-toggle="collapse" href="#import-participant" role="button" aria-expanded="false" aria-controls="import-participant">
-                            <span><i class="fa fa-clipboard"></i></span>
+                            <span><i class="fa fa-clipboard" aria-label="Import button"></i></span>
                         </a>
                         <a class="trash-icon px-2 toggle-it" title="Clear all participants">
-                            <span><i class="fa fa-trash"></i></span>
+                            <span><i class="fa fa-trash" aria-label="clean up button"></i></span>
                         </a>
                         <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
                     </div>
