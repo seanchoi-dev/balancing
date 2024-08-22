@@ -149,6 +149,10 @@ a {
     background-color: #f1f3f4;
   }
   
+  .level-config {
+    background-color: #00000080;
+  }
+
   .level-config label {
     cursor: pointer;
   }

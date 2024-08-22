@@ -416,6 +416,9 @@ const initTeam = () => {
 
 export default async function init (block) {
     const h1 = block.querySelector('h1');
+    const matchLink = block.querySelector('a');
+    matchLink.parentElement.classList.add('d-flex', 'justify-content-center', 'my-3');
+    matchLink?.classList.add('btn', 'btn-primary');
     const { loadScript, loadStyle, decorateAutoBlock } = await import(`${getLibs()}/utils/utils.js`);
     loadStyle('/deps/bootstrap.min.css');
     API_KEY = await getRiotAPIKey();
@@ -433,7 +436,7 @@ export default async function init (block) {
     initTeam();
     // document.querySelector('audio').volume = 0.25;
     decorateAutoBlock(document.getElementById('releasenote'));
-    loadScript('/deps/bootstrap.bundle.min.js');    
+    loadScript('/deps/bootstrap.bundle.min.js');
 }
 
 const teamConfigBody = `
@@ -491,7 +494,7 @@ const teamConfigBody = `
                         </a>
                         <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
                     </div>
-                    <div class="level-config col-12 col-xl-6 row gap-2 mx-0"></div>
+                    <div class="level-config col-12 col-xl-6 row gap-2 mx-0 pb-2"></div>
                 </div>
                 <div id="import-participant" class="form-group collapse">
                     <label for="import-participant-list">Copy and paste a list of participants. One participant per line.</label>
