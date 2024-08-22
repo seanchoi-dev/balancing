@@ -449,7 +449,7 @@ const teamConfigBody = `
                         </div>
                     </div>
                     <div class="text-white d-flex align-items-center gap-2">
-                        <h5 id="version" class="my-1 text-end"></h5>
+                        <h2 id="version" class="h5 my-1 text-end"></h2>
                         <a id="releasenote" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover modal" data-modal-hash="#releasenote" data-modal-path="/fragments/release-note" href="#releasenote">Release Note</a>
                     </div>
                 </div>
@@ -459,7 +459,7 @@ const teamConfigBody = `
             <div class="container pb-5 position-relative">
                 <div class="general-config row align-items-center py-3 mb-3 border-bottom border-dark">
                     <div class="form-group col-12 col-xl-6 mb-2 mb-xl-0 d-flex gap-3 align-items-center">
-                        <select id="region">
+                        <select id="region" aria-label="Region selector">
                             <option value="BR1">BR1</option>
                             <option value="EUN1">EUN1</option>
                             <option value="EUW1">EUW1</option>
