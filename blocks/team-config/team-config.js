@@ -417,7 +417,7 @@ const initTeam = () => {
 export default async function init (block) {
     const h1 = block.querySelector('h1');
     const matchLink = block.querySelector('a');
-    matchLink.parentElement.classList.add('d-flex', 'justify-content-center', 'my-3');
+    matchLink?.parentElement.classList.add('d-flex', 'justify-content-center', 'my-3');
     matchLink?.classList.add('btn', 'btn-primary');
     const { loadScript, loadStyle, decorateAutoBlock } = await import(`${getLibs()}/utils/utils.js`);
     loadStyle('/deps/bootstrap.min.css');
