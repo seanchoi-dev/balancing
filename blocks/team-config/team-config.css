@@ -190,11 +190,6 @@ a {
   .team-config {
     position: relative;
     z-index: 1;
-    background-image: url('/lib/images/ahri.webp');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    min-height: 1000px;
   }
   
   .title, .rebalance-btn-container, .bg-dark-t {

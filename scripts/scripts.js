@@ -34,7 +34,12 @@ export const CONFIG = {
 // Load LCP image immediately
 (async function loadLCPImage() {
   const lcpImg = document.querySelector('img');
-  lcpImg?.removeAttribute('loading');
+  if(lcpImg) {
+    lcpImg.setAttribute('loading', 'eager');
+    lcpImg.setAttribute('fetchpriority', 'high');
+    document.querySelector('main').prepend(lcpImg.parentNode);
+    lcpImg.classList.add('background');
+  }
 }());
 
 /*
