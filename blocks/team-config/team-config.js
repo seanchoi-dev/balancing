@@ -415,6 +415,7 @@ const initTeam = () => {
 };
 
 export default async function init (block) {
+    const h1 = block.querySelector('h1');
     const teamConfigBody = block.querySelector('code');
     const { loadScript, loadStyle, decorateAutoBlock } = await import(`${getLibs()}/utils/utils.js`);
     loadStyle('/deps/bootstrap.min.css');
@@ -424,6 +425,12 @@ export default async function init (block) {
     configBody.innerHTML = teamConfigBody?.textContent;
     configBody.querySelector('#version').textContent = await getVersion();
     block.prepend(configBody);
+    if(h1) {
+      const h1Body = document.createElement('div');
+      h1Body.classList.add('title', 'py-5', 'text-center', 'text-white');
+      h1Body.append(h1);
+      block.prepend(h1Body);
+    }
     initTeam();
     // document.querySelector('audio').volume = 0.25;
     decorateAutoBlock(document.getElementById('releasenote'));
