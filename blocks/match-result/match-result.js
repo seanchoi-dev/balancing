@@ -1,4 +1,5 @@
 import { getKeyByValue } from '../../scripts/utils.js';
+import { opggRegion } from '../team-config/team-config.js';
 
 let teamsHistory = [], historyIndex = 0, state = {};
 
@@ -151,7 +152,7 @@ const generateTeam = (team) => {
         </div>
         <div class="total me-1 text-white">${totalLevels(team)}</div>
     </div>
-    <div class="opgg-all mt-3"><a target="_blank" href="https://www.op.gg/multisearch/na?summoners=${encodeURIComponent(summoners.substring(1))}"><img src="../lib/images/opgg.png"></a></div>
+    <div class="opgg-all mt-3"><a target="_blank" href="https://www.op.gg/multisearch/${opggRegion(state.region)}?summoners=${encodeURIComponent(summoners.substring(1))}"><img src="../lib/images/opgg.png"></a></div>
 </div>`;
 }
 const vs = () => {

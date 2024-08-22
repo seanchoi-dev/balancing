@@ -30,12 +30,15 @@ const defaultLevelMap = {
     C : 17,
 };
 
-let state = {
+const defaultState = {
     players: [],
     balancedBy: 'tier',
     numOfPlayers: 10,
     levelConfig: defaultLevelMap,
-};
+    region: 'NA1',
+}
+
+let state = defaultState;
 
 const setTierCache = (input, tier) => {
     let tiers = {}
@@ -190,6 +193,15 @@ const removePlayer = (index) => {
     state.players.splice(index, 1);
 }
 
+const regionSelectEvent = () => {
+    const regionSelect = document.getElementById('region');
+    regionSelect.value = state.region || 'NA1';
+    regionSelect.addEventListener('change', (e) => {
+        state.region = regionSelect.value; 
+        saveState();
+    });
+}
+
 const numParticipantsEvent = () => {
     const participantsSelect = document.getElementById('nb-participants');
     participantsSelect.value = state.numOfPlayers || 10;
@@ -215,6 +227,13 @@ const getSimpleTierText = (tier, rank) => {
     return `${tier[0]}${rank}`;
 };
 
+export const opggRegion = (stateRegion) => {
+    const opggRegionMatch = {
+        'NA1': 'na',
+    }
+    return opggRegionMatch[stateRegion] ?? stateRegion;
+}
+
 const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
     const accountAPIPromisesRes = await Promise.all(accountAPIPromises);
     const accountAPIPromisesResJson = await Promise.all(accountAPIPromisesRes.map(r => r.json()));
@@ -227,9 +246,9 @@ const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
         btn.classList.add('disabled');
         return;
     }
-    const summonerAPIPromisesRes = await Promise.all(accountAPIPromisesResJson.map(j => fetch(`https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${j.puuid}?api_key=${API_KEY}`)));
+    const summonerAPIPromisesRes = await Promise.all(accountAPIPromisesResJson.map(j => fetch(`https://${state.region}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${j.puuid}?api_key=${API_KEY}`)));
     const summonerAPIPromisesResJson = await Promise.all(summonerAPIPromisesRes.map(r => r.json()));
-    const leagueBySumAPIPromisesRes = await Promise.all(summonerAPIPromisesResJson.map(j => fetch(`https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/${j.id}?api_key=${API_KEY}`)));
+    const leagueBySumAPIPromisesRes = await Promise.all(summonerAPIPromisesResJson.map(j => fetch(`https://${state.region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${j.id}?api_key=${API_KEY}`)));
     const leagueBySumAPIPromisesResJson = await Promise.all(leagueBySumAPIPromisesRes.map(r => r.json()));
     const updateTier = (inputEl, index) => {
         const playerEl = inputEl.closest('.participant-div');
@@ -242,7 +261,7 @@ const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
             if (league.queueType.includes('FLEX')) flexRank = getSimpleTierText(league.tier, league.rank);
         });
         tierEl.innerHTML = `${soloRank} | ${flexRank}`;
-        btn.href = `https://www.op.gg/summoners/na/${accountAPIPromisesResJson[index].gameName}-${accountAPIPromisesResJson[index].tagLine}`;
+        btn.href = `https://www.op.gg/summoners/${opggRegion(state.region)}/${accountAPIPromisesResJson[index].gameName}-${accountAPIPromisesResJson[index].tagLine}`;
         btn.classList.remove('disabled');
     }
     if (targetInput === 'all') {
@@ -280,12 +299,7 @@ const clearAll = () => {
     document.getElementById('mix_players').innerHTML = '';
     document.querySelector('.level-config').innerHTML = '';
     document.getElementById('nb-participants').value = 10;
-    state = {
-        players: [],
-        balancedBy: 'tier',
-        numOfPlayers: 10,
-        levelConfig: defaultLevelMap,
-    };
+    state = defaultState;
     saveState();
     window.localStorage.removeItem('tiers');
     initTeam();
@@ -385,6 +399,7 @@ const initTeam = () => {
         }
     }
     importBtnEvent();
+    regionSelectEvent();
     numParticipantsEvent();
     levelConfig();
     document.querySelector('.trash-icon').addEventListener('click', e => clearAll());
