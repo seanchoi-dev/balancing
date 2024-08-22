@@ -6,6 +6,10 @@ header ~ main {
     margin: 0;
 }
 
+.team-config {
+  color: var(--bs-white);
+}
+
 .team-config > div > div > strong {
     display: flex;
     justify-content: center;
@@ -86,11 +90,11 @@ a {
   }
   
   .bg-grey-opacity {
-    background-color: #f0f0f0d4;
+    background-color: #f0f0f029;
   }
   
   .bg-dark-grey-opacity {
-    background-color: #2e3d54e8;
+    background-color: #2e3d5436;
   }
   
   .label-position, .level-participant label {
@@ -127,7 +131,7 @@ a {
   .trash-icon {
     text-decoration: none;
     font-size: 22px;
-    color: var(--bs-danger);
+    color: var(--bs-orange);
     position: relative;
     top: -2px
   }
@@ -157,7 +161,7 @@ a {
   } 
   
   .participant-div:hover {
-    background-color: #387ab3a6;
+    background-color: #b33838cf;
     transition: background-color .15s ease-in;
   }
 
@@ -186,7 +190,7 @@ a {
   .team-config {
     position: relative;
     z-index: 1;
-    background-image: url('/lib/images/porobg.jpg');
+    background-image: url('/lib/images/ahri.webp');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -194,7 +198,7 @@ a {
   }
   
   .title, .rebalance-btn-container, .bg-dark-t {
-    background-color: #000000d4;
+    background-color: #0000006e;
   }
   
   /* for result */
