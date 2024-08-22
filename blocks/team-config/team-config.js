@@ -418,7 +418,6 @@ export default async function init (block) {
     const h1 = block.querySelector('h1');
     const { loadScript, loadStyle, decorateAutoBlock } = await import(`${getLibs()}/utils/utils.js`);
     loadStyle('/deps/bootstrap.min.css');
-    loadStyle('/deps/font-awesome.min.css');
     API_KEY = await getRiotAPIKey();
     const configBody = document.createElement('div');
     configBody.innerHTML = teamConfigBody;
@@ -485,10 +484,10 @@ const teamConfigBody = `
                         </select>
                         <label for="nb-participants" class="head-label">Participants</label>
                         <a class="import-icon toggle-it" data-bs-toggle="collapse" href="#import-participant" role="button" aria-expanded="false" aria-controls="import-participant">
-                            <span><i class="fa fa-clipboard" aria-label="Import button"></i></span>
+                            <span><button class="btn btn-success" aria-label="Import button">Import</button></span>
                         </a>
                         <a class="trash-icon px-2 toggle-it" title="Clear all participants">
-                            <span><i class="fa fa-trash" aria-label="clean up button"></i></span>
+                            <span><button class="btn btn-danger" aria-label="Clean up button">Clean up</button></span>
                         </a>
                         <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
                     </div>
