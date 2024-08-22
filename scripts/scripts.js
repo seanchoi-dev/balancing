@@ -39,6 +39,7 @@ export const CONFIG = {
     lcpImg.setAttribute('fetchpriority', 'high');
     document.querySelector('main').prepend(lcpImg.parentNode);
     lcpImg.classList.add('background');
+    document.querySelector('main').style.opacity = 1;
   }
 }());
 
