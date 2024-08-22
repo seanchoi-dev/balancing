@@ -6,6 +6,7 @@
     user-select: none;
     border: 2px solid #fff;
     border-radius: 30px;
+    background-color: #00000080;
 }
 
 .dialog-modal button.dialog-close {
