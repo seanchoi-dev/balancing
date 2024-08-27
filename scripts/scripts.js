@@ -68,5 +68,4 @@ const miloLibs = setLibs(LIBS);
   await loadArea();
   document.querySelector('main').classList.add('loaded');
   await loadDelayed();
-  loadScript('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5415420348816979');
 }());
