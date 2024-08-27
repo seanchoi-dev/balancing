@@ -305,6 +305,16 @@ const clearAll = () => {
     initTeam();
 };
 
+const clearPositions = () => {
+    document.querySelectorAll('input[data-position="all"').forEach(i => i.click());
+    saveState();
+};
+
+const clearLevels = () => {
+    document.querySelectorAll('input.level-input-B').forEach(i => i.click());
+    saveState();
+};
+
 const utf8ToB64 = (str) => window.btoa(unescape(encodeURIComponent(str)));
 const b64ToUtf8 = (str) => decodeURIComponent(escape(window.atob(str)));
 const parseEncodedState = (encodedState) => {
@@ -402,7 +412,9 @@ const initTeam = () => {
     regionSelectEvent();
     numParticipantsEvent();
     levelConfig();
-    document.querySelector('.trash-icon').addEventListener('click', e => clearAll());
+    document.querySelector('#clean-all').addEventListener('click', e => clearAll());
+    document.querySelector('#clean-positions').addEventListener('click', e => clearPositions());
+    document.querySelector('#clean-levels').addEventListener('click', e => clearLevels());
     setTierByInputChange(document.querySelectorAll('.input-participants'));
     // document.getElementById('shareLink').addEventListener('click', () => copyState());
 
@@ -486,12 +498,15 @@ const teamConfigBody = `
                             <option value="10" selected>10</option>
                         </select>
                         <label for="nb-participants" class="head-label">Participants</label>
-                        <a class="import-icon toggle-it" data-bs-toggle="collapse" href="#import-participant" role="button" aria-expanded="false" aria-controls="import-participant">
-                            <span><button class="btn btn-success" aria-label="Import button">Import</button></span>
+                        <a class="import-icon toggle-it" data-bs-toggle="collapse" href="javascript:void(0)" role="button" aria-expanded="false" aria-controls="import-participant">
+                            <span><button class="btn btn-success btn-sm" aria-label="Import button">Import</button></span>
                         </a>
-                        <a class="trash-icon px-2 toggle-it" href="#clean-up" title="Clear all participants">
-                            <span><button class="btn btn-danger" aria-label="Clean up button">Clean up</button></span>
-                        </a>
+                        <div class="claen-up-group d-flex gap-1 align-items-center p-1 px-2">
+                            <div class="small me-2">Clean ups:</div>
+                            <div><a id="clean-all" class="px-2 btn btn-danger btn-sm" href="javascript:void(0)">All</a></div>
+                            <div><a id="clean-positions" class="px-2 btn btn-danger btn-sm" href="javascript:void(0)">Positions</a></div>
+                            <div><a id="clean-levels" class="px-2 btn btn-danger btn-sm" href="javascript:void(0)">Levels</a></div>
+                        </div>
                         <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
                     </div>
                     <div class="level-config col-12 col-xl-6 row gap-2 mx-0 pb-2"></div>
