@@ -498,7 +498,7 @@ const teamConfigBody = `
                             <option value="10" selected>10</option>
                         </select>
                         <label for="nb-participants" class="head-label">Participants</label>
-                        <a class="import-icon toggle-it" data-bs-toggle="collapse" href="javascript:void(0)" role="button" aria-expanded="false" aria-controls="import-participant">
+                        <a class="import-icon toggle-it" data-bs-toggle="collapse" href="#import-participant" role="button" aria-expanded="false" aria-controls="import-participant">
                             <span><button class="btn btn-success btn-sm" aria-label="Import button">Import</button></span>
                         </a>
                         <div class="claen-up-group d-flex gap-1 align-items-center p-1 px-2">
