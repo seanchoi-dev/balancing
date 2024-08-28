@@ -439,10 +439,13 @@ export default async function init (block) {
     configBody.querySelector('#version').textContent = await getVersion();
     block.prepend(configBody);
     if(h1) {
+      const container = document.createElement('div');
+      container.classList.add('container');
       const h1Body = document.createElement('div');
-      h1Body.classList.add('title', 'py-5', 'text-center', 'text-white');
+      h1Body.classList.add('title', 'py-5', 'text-center', 'text-white', 'bg-dark-grey-opacity');
       h1Body.append(h1);
-      block.prepend(h1Body);
+      container.append(h1Body)
+      block.prepend(container);
       h1.style.display = 'block';
     }
     initTeam();

@@ -93,7 +93,7 @@ a {
   }
   
   .bg-dark-grey-opacity {
-    background-color: #2e3d5436;
+    background-color: #0000006e;
   }
   
   .label-position, .level-participant label {
@@ -195,7 +195,7 @@ a {
     z-index: 1;
   }
   
-  .title, .rebalance-btn-container, .bg-dark-t {
+  .rebalance-btn-container, .bg-dark-t {
     background-color: #0000006e;
   }
   
