@@ -412,9 +412,9 @@ const initTeam = () => {
     regionSelectEvent();
     numParticipantsEvent();
     levelConfig();
-    document.querySelector('#clean-all').addEventListener('click', e => clearAll());
-    document.querySelector('#clean-positions').addEventListener('click', e => clearPositions());
-    document.querySelector('#clean-levels').addEventListener('click', e => clearLevels());
+    document.querySelector('#clean-all').addEventListener('click', e => { e.preventDefault(); clearAll(); });
+    document.querySelector('#clean-positions').addEventListener('click', e => { e.preventDefault(); clearPositions(); });
+    document.querySelector('#clean-levels').addEventListener('click', e => { e.preventDefault(); clearLevels(); });
     setTierByInputChange(document.querySelectorAll('.input-participants'));
     // document.getElementById('shareLink').addEventListener('click', () => copyState());
 
@@ -503,9 +503,9 @@ const teamConfigBody = `
                         </a>
                         <div class="claen-up-group d-flex gap-1 align-items-center p-1 px-2">
                             <div class="small me-2">Clean ups:</div>
-                            <div><a id="clean-all" class="px-2 btn btn-danger btn-sm" href="javascript:void(0)">All</a></div>
-                            <div><a id="clean-positions" class="px-2 btn btn-danger btn-sm" href="javascript:void(0)">Positions</a></div>
-                            <div><a id="clean-levels" class="px-2 btn btn-danger btn-sm" href="javascript:void(0)">Levels</a></div>
+                            <div><button id="clean-all" class="px-2 btn btn-danger btn-sm">All</button></div>
+                            <div><button id="clean-positions" class="px-2 btn btn-danger btn-sm">Positions</button></div>
+                            <div><button id="clean-levels" class="px-2 btn btn-danger btn-sm">Levels</button></div>
                         </div>
                         <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
                     </div>
