@@ -456,15 +456,23 @@ const teamConfigBody = `
     <form id="mix_form" name="mix" autocomplete="on" onsubmit="return submitted()">
         <div class="bg-dark-grey-opacity">
             <div class="container">
-                <div class="d-flex py-2 justify-content-between">
-                    <div class="socials d-flex gap-2">
-                        <div class="social-item">
-                            <a target="_blank" class="link-light link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover" href="https://discord.gg/f2KVPS2gpj"><img class="social-icon me-2" width="30px" height="30px" src="../lib/images/discord-icon.svg" alt="discord">Support</a>
-                        </div>
+                <div class="d-flex py-2 justify-content-between align-items-center">
+                    <div class="claen-up-group d-flex gap-3 align-items-center p-1 px-2">
+                        <div>Clean ups:</div>
+                        <div><button id="clean-all" class="px-2 btn btn-danger">All</button></div>
+                        <div><button id="clean-positions" class="px-2 btn btn-danger">Positions</button></div>
+                        <div><button id="clean-levels" class="px-2 btn btn-danger">Levels</button></div>
                     </div>
-                    <div class="text-white d-flex align-items-center gap-2">
-                        <h2 id="version" class="h5 my-1 text-end"></h2>
-                        <a id="releasenote" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover modal" data-modal-hash="#releasenote" data-modal-path="/fragments/release-note" href="#releasenote">Release Note</a>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="text-white d-flex align-items-center gap-2">
+                            <h2 id="version" class="h5 my-1 text-end"></h2>
+                            <a id="releasenote" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover modal" data-modal-hash="#releasenote" data-modal-path="/fragments/release-note" href="#releasenote">Release Note</a>
+                        </div>
+                        <div class="socials d-flex gap-2">
+                            <div class="social-item">
+                                <a target="_blank" class="link-light link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover" href="https://discord.gg/f2KVPS2gpj"><img class="social-icon me-2" width="30px" height="30px" src="../lib/images/discord-icon.svg" alt="discord">Support</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -499,14 +507,8 @@ const teamConfigBody = `
                         </select>
                         <label for="nb-participants" class="head-label">Participants</label>
                         <a class="import-icon toggle-it" data-bs-toggle="collapse" href="#import-participant" role="button" aria-expanded="false" aria-controls="import-participant">
-                            <span><button class="btn btn-success btn-sm" aria-label="Import button">Import</button></span>
+                            <span><button class="btn btn-success" aria-label="Import button">Import</button></span>
                         </a>
-                        <div class="claen-up-group d-flex gap-1 align-items-center p-1 px-2">
-                            <div class="small me-2">Clean ups:</div>
-                            <div><button id="clean-all" class="px-2 btn btn-danger btn-sm">All</button></div>
-                            <div><button id="clean-positions" class="px-2 btn btn-danger btn-sm">Positions</button></div>
-                            <div><button id="clean-levels" class="px-2 btn btn-danger btn-sm">Levels</button></div>
-                        </div>
                         <!-- <div id="shareLink" class="share-link btn btn-success">Share</div> -->
                     </div>
                     <div class="level-config col-12 col-xl-6 row gap-2 mx-0 pb-2"></div>
