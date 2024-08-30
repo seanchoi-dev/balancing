@@ -471,11 +471,6 @@ const teamConfigBody = `
                             <h2 id="version" class="h5 my-1 text-end"></h2>
                             <a id="releasenote" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover modal" data-modal-hash="#releasenote" data-modal-path="/fragments/release-note" href="#releasenote">Release Note</a>
                         </div>
-                        <div class="socials d-flex gap-2">
-                            <div class="social-item">
-                                <a target="_blank" class="link-light link-offset-2 link-underline-opacity-50 link-underline-opacity-100-hover" href="https://discord.gg/f2KVPS2gpj"><img class="social-icon me-2" width="30px" height="30px" src="../lib/images/discord-icon.svg" alt="discord">Support</a>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
