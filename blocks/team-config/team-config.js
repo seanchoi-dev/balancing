@@ -257,6 +257,7 @@ const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
         btn.classList.add('disabled');
         return;
     }
+    
     const summonerAPIPromisesRes = await Promise.all(accountAPIPromisesResJson.map(j => j.status ? null : fetch(`https://${state.region}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${j.puuid}?api_key=${API_KEY}`)));
     const summonerAPIPromisesResJson = await Promise.all(summonerAPIPromisesRes.map(r => r ? r.json() : null));
     const leagueBySumAPIPromisesRes = await Promise.all(summonerAPIPromisesResJson.map(j => j ? fetch(`https://${state.region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${j.id}?api_key=${API_KEY}`) : null));
