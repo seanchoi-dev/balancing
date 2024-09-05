@@ -237,7 +237,18 @@ export const opggRegion = (stateRegion) => {
 const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
     const accountAPIPromisesRes = await Promise.all(accountAPIPromises);
     const accountAPIPromisesResJson = await Promise.all(accountAPIPromisesRes.map(r => r.json()));
-    if (accountAPIPromisesResJson[0]?.status) {
+    if (targetInput === 'all') {
+        accountAPIPromisesResJson.forEach((json, index) => {
+            if (json.status) {
+                const playerEl = document.querySelectorAll('.participant-div')[index];
+                const btn = playerEl.querySelector('.tier-wrapper a');
+                const tierEl = playerEl.querySelector('.tier-text');
+                tierEl.innerHTML = 'Not Found';
+                btn.href = '#';
+                btn.classList.add('disabled');
+            }
+        });
+    } else if (accountAPIPromisesResJson[0]?.status) {
         const playerEl = targetInput.closest('.participant-div');
         const btn = playerEl.querySelector('.tier-wrapper a');
         const tierEl = playerEl.querySelector('.tier-text');
@@ -246,17 +257,18 @@ const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
         btn.classList.add('disabled');
         return;
     }
-    const summonerAPIPromisesRes = await Promise.all(accountAPIPromisesResJson.map(j => fetch(`https://${state.region}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${j.puuid}?api_key=${API_KEY}`)));
-    const summonerAPIPromisesResJson = await Promise.all(summonerAPIPromisesRes.map(r => r.json()));
-    const leagueBySumAPIPromisesRes = await Promise.all(summonerAPIPromisesResJson.map(j => fetch(`https://${state.region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${j.id}?api_key=${API_KEY}`)));
-    const leagueBySumAPIPromisesResJson = await Promise.all(leagueBySumAPIPromisesRes.map(r => r.json()));
+    const summonerAPIPromisesRes = await Promise.all(accountAPIPromisesResJson.map(j => j.status ? null : fetch(`https://${state.region}.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${j.puuid}?api_key=${API_KEY}`)));
+    const summonerAPIPromisesResJson = await Promise.all(summonerAPIPromisesRes.map(r => r ? r.json() : null));
+    const leagueBySumAPIPromisesRes = await Promise.all(summonerAPIPromisesResJson.map(j => j ? fetch(`https://${state.region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${j.id}?api_key=${API_KEY}`) : null));
+    const leagueBySumAPIPromisesResJson = await Promise.all(leagueBySumAPIPromisesRes.map(r => r ? r.json() : null));
     const updateTier = (inputEl, index) => {
+        if(!leagueBySumAPIPromisesResJson[index]) return;
         const playerEl = inputEl.closest('.participant-div');
         const btn = playerEl.querySelector('.tier-wrapper a');
         const tierEl = playerEl.querySelector('.tier-text');
         let soloRank = 'UR';
         let flexRank = 'UR';
-        leagueBySumAPIPromisesResJson[index]?.forEach(league => {
+        leagueBySumAPIPromisesResJson[index].forEach(league => {
             if (league.queueType.includes('SOLO')) soloRank = getSimpleTierText(league.tier, league.rank);
             if (league.queueType.includes('FLEX')) flexRank = getSimpleTierText(league.tier, league.rank);
         });
