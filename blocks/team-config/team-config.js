@@ -118,6 +118,7 @@ const getNewParticipant = (index, player) => {
     </div>
 </div>`;
 }
+
 const levelConfig = () => {
     const levelConfigEl = document.querySelector('.level-config');
     Object.keys(state.levelConfig).forEach(k => {
@@ -391,6 +392,7 @@ const importBtnEvent = () => {
         }
     });
 };
+
 const initTeam = () => {
     const { hash } = window.location;
     if (hash && hash.length > 20) {
