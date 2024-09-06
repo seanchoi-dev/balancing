@@ -249,7 +249,7 @@ const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
                 btn.classList.add('disabled');
             }
         });
-    } else if (accountAPIPromisesResJson[0]?.status) {
+    } else if (targetInput !== 'all' && accountAPIPromisesResJson[0]?.status) {
         const playerEl = targetInput.closest('.participant-div');
         const btn = playerEl.querySelector('.tier-wrapper a');
         const tierEl = playerEl.querySelector('.tier-text');
