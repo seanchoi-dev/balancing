@@ -41,6 +41,7 @@ const defaultState = {
 let state = defaultState;
 
 const setTierCache = (input, tier) => {
+    return;
     let tiers = {}
     if(window.localStorage.tiers) {
         tiers = JSON.parse(window.localStorage.tiers);
