@@ -52,6 +52,7 @@ const setTierCache = (input, tier) => {
 }
 
 const getTierFromCache = (input) => {
+    return false;
     if (window.localStorage.tiers) {
         input = input.trim().toLowerCase();
         const tiers = JSON.parse(window.localStorage.tiers);
