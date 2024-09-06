@@ -41,7 +41,6 @@ const defaultState = {
 let state = defaultState;
 
 const setTierCache = (input, tier) => {
-    return;
     let tiers = {}
     if(window.localStorage.tiers) {
         tiers = JSON.parse(window.localStorage.tiers);
@@ -52,7 +51,6 @@ const setTierCache = (input, tier) => {
 }
 
 const getTierFromCache = (input) => {
-    return false;
     if (window.localStorage.tiers) {
         input = input.trim().toLowerCase();
         const tiers = JSON.parse(window.localStorage.tiers);
@@ -240,7 +238,7 @@ export const opggRegion = (stateRegion) => {
 const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
     const accountAPIPromisesRes = await Promise.all(accountAPIPromises);
     const accountAPIPromisesResJson = await Promise.all(accountAPIPromisesRes.map(r => r.json()));
-    if (targetInput === 'all') {
+    if (targetInput === 'all' && accountAPIPromisesResJson.length === [...document.querySelectorAll('.input-participants')].filter(i => i.value).length) {
         accountAPIPromisesResJson.forEach((json, index) => {
             if (json.status) {
                 const playerEl = document.querySelectorAll('.participant-div')[index];
