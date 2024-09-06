@@ -391,7 +391,6 @@ const importBtnEvent = () => {
         }
     });
 };
-
 const initTeam = () => {
     const { hash } = window.location;
     if (hash && hash.length > 20) {
