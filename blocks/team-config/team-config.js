@@ -1,5 +1,6 @@
 import { getRiotAPIKey, capitalize, getVersion, roman2arabic, getLibs } from '../../scripts/utils.js';
 
+const notFound = 'Not Found';
 let API_KEY = '';
 
 class Player {
@@ -41,8 +42,9 @@ const defaultState = {
 let state = defaultState;
 
 const setTierCache = (input, tier) => {
+    if (tier === notFound) return;
     let tiers = {}
-    if(window.localStorage.tiers) {
+    if (window.localStorage.tiers) {
         tiers = JSON.parse(window.localStorage.tiers);
     }
     const _time_now_ = Date.now();
@@ -54,7 +56,7 @@ const getTierFromCache = (input) => {
     if (window.localStorage.tiers) {
         input = input.trim().toLowerCase();
         const tiers = JSON.parse(window.localStorage.tiers);
-        if(Date.now() - tiers[input]?.recorded < 86400000) {
+        if (Date.now() - tiers[input]?.recorded < 86400000) {
             return tiers[input].tier;
         }
     }
@@ -68,7 +70,7 @@ const saveState = () => {
         const tierText = p.querySelector('.tier-text').textContent;
         const btnHref = p.querySelector('.tier-wrapper .btn').href;
         const positions = [];
-        setTierCache(name, tierText ?? 'Not Found');
+        setTierCache(name, tierText ?? notFound);
         p.querySelectorAll('.position-item:checked').forEach(i => positions.push(i.dataset.position));
         state.players.push(new Player(name, positions, parseInt(p.querySelector('.level-input:checked').value), tierText, btnHref));
     });
@@ -92,7 +94,7 @@ const getNewParticipant = (index, player) => {
             <input type="text" id="mix_players_${index}_name" name="mix.players.${index}.name" class="form-control input-participants ${player.name ? '' : 'no-value'}" placeholder="Player ${index+1}" value="${player.name}" required>
         </div>
         <div class="tier-wrapper">
-            <a class="btn btn-secondary px-1 ms-1 ${!player.tierText || player.tierText === 'Not Found' ? 'disabled' : ''}" target="_blank" href="${player.btnHref || '#'}"><small class="tier-text">${player.tierText || 'Not Found'}</small></a>
+            <a class="btn btn-secondary px-1 ms-1 ${!player.tierText || player.tierText === notFound ? 'disabled' : ''}" target="_blank" href="${player.btnHref || '#'}"><small class="tier-text">${player.tierText || notFound}</small></a>
         </div>
     </div>
     <div class="col-12 col-xl-3 positions mb-2 mb-xl-0">
@@ -151,7 +153,7 @@ const levelConfig = () => {
 const addPlayer = (index, player) => {
     const players = document.getElementById('mix_players');
     const div = document.createElement('div');
-    const p = player || new Player('', ['all'], 1, 'Not Found', '#');
+    const p = player || new Player('', ['all'], 1, notFound, '#');
     div.innerHTML = getNewParticipant(index, p);
     players.append(div);
     div.querySelectorAll('.position-item').forEach(input => input.addEventListener('change', () => {
@@ -244,7 +246,7 @@ const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
                 const playerEl = document.querySelectorAll('.participant-div')[index];
                 const btn = playerEl.querySelector('.tier-wrapper a');
                 const tierEl = playerEl.querySelector('.tier-text');
-                tierEl.innerHTML = 'Not Found';
+                tierEl.innerHTML = notFound;
                 btn.href = '#';
                 btn.classList.add('disabled');
             }
@@ -253,7 +255,7 @@ const updateTiersbyRiotAPI = async (accountAPIPromises, targetInput) => {
         const playerEl = targetInput.closest('.participant-div');
         const btn = playerEl.querySelector('.tier-wrapper a');
         const tierEl = playerEl.querySelector('.tier-text');
-        tierEl.innerHTML = 'Not Found';
+        tierEl.innerHTML = notFound;
         btn.href = '#';
         btn.classList.add('disabled');
         return;
@@ -301,7 +303,7 @@ const setTierByInputChange = async (inputEls = [], targetInput = 'all') => {
             const tierEl = playerEl.querySelector('.tier-text');
             btn.href = '#';
             btn.classList.add('disabled');
-            tierEl.innerHTML = 'Not Found';
+            tierEl.innerHTML = notFound;
             return;
         }
         accountAPIPromises.push(fetch(`https://lolbalance-api.newnesid.workers.dev/api/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${API_KEY}`));
@@ -414,7 +416,7 @@ const initTeam = () => {
         players.forEach((p, i) => {
             p.tierText = getTierFromCache(p.name);
             p.cached = true;
-            if (!p.tierText || p.tierText === 'Not Found') p.cached = false;
+            if (!p.tierText || p.tierText === notFound) p.cached = false;
             addPlayer(i, p)
         });
     } else {
