@@ -81,11 +81,13 @@ const fragmentModalLoad = async a => {
   a.dataset.modalPath = url.pathname;
   a.dataset.modalHash = url.hash;
   a.href = url.hash;
+  a.dataset.bsTarget = url.hash;
+  a.dataset.bsToggle = "modal";
   a.className = `modal link-block ${[...a.classList].join(' ')}`;
   const doc = await fetch(a.dataset.modalPath);
   if (!doc || !doc.ok) return;
-  
-  const modal = createTag('div', { class: 'modal-dialog modal-dialog-centered modal-dialog-scrollable' });
+  const modal = createTag('div', { class: 'modal fade', id: a.hash.substring(1) });
+  const modalDialog = createTag('div', { class: 'modal-dialog modal-dialog-centered modal-dialog-scrollable' });
   let fragmentMain = document.createElement('html');
   fragmentMain.innerHTML = await doc.text();
   fragmentMain = fragmentMain.querySelector('main');
@@ -94,7 +96,8 @@ const fragmentModalLoad = async a => {
   const { loadSections } = await import('./aem.js');
   decorateMain(fragmentMain);
   loadSections(fragmentMain);
-  Array.from(fragmentMain.childNodes).forEach(n => modal.append(n));
+  Array.from(fragmentMain.childNodes).forEach(n => modalDialog.append(n));
+  modal.append(modalDialog);
   document.querySelector('body').append(modal);
 };
 
