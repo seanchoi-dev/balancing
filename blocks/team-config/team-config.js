@@ -441,6 +441,17 @@ const initTeam = () => {
         audio.load();
         audio.play();
     });
+ 
+    const playerInputs = document.querySelectorAll('input[type=text]');
+    playerInputs.forEach((input, index) => {
+        input.addEventListener('keypress', e => {
+            e.preventDefault();
+            if (e.key === 'Enter') {
+                playerInputs[index + 1]?.focus();
+                playerInputs[index + 1]?.select();
+            }
+        });
+    });
 };
 
 export default async function init (block) {
