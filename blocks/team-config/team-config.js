@@ -444,8 +444,8 @@ const initTeam = () => {
     const playerInputs = document.querySelectorAll('input[type=text]');
     playerInputs.forEach((input, index) => {
         input.addEventListener('keypress', e => {
-            e.preventDefault();
             if (e.key === 'Enter') {
+                e.preventDefault();
                 playerInputs[index + 1]?.focus();
                 playerInputs[index + 1]?.select();
             }
