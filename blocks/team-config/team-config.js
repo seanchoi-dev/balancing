@@ -441,7 +441,7 @@ const initTeam = () => {
         audio.load();
         audio.play();
     });
- 
+
     const playerInputs = document.querySelectorAll('input[type=text]');
     playerInputs.forEach((input, index) => {
         input.addEventListener('keypress', e => {
