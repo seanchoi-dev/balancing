@@ -70,7 +70,7 @@ export function decorateMain(main) {
   decorateBlocks(main);
 }
 
-const fragmentModalLoad = async a => {
+const fragmentModalLoad = async (a) => {
   let url;
   try {
     url = new URL(a.href);
@@ -78,6 +78,7 @@ const fragmentModalLoad = async a => {
     console.error(e.toString());
     return false;
   }
+  const modalClass = a.dataset.modalClass ?? '';
   a.dataset.modalPath = url.pathname;
   a.dataset.modalHash = url.hash;
   a.href = url.hash;
@@ -87,7 +88,9 @@ const fragmentModalLoad = async a => {
   const doc = await fetch(a.dataset.modalPath);
   if (!doc || !doc.ok) return;
   const modal = createTag('div', { class: 'modal fade', id: a.hash.substring(1) });
-  const modalDialog = createTag('div', { class: 'modal-dialog modal-dialog-centered modal-dialog-scrollable' });
+  const modalDialog = createTag('div', { class: `modal-dialog modal-dialog-centered ${modalClass}` });
+  const modalContent = createTag('div', { class: 'modal-content' });
+  const modalBody = createTag('div', { class: 'modal-body' });
   let fragmentMain = document.createElement('html');
   fragmentMain.innerHTML = await doc.text();
   fragmentMain = fragmentMain.querySelector('main');
@@ -96,7 +99,9 @@ const fragmentModalLoad = async a => {
   const { loadSections } = await import('./aem.js');
   decorateMain(fragmentMain);
   loadSections(fragmentMain);
-  Array.from(fragmentMain.childNodes).forEach(n => modalDialog.append(n));
+  Array.from(fragmentMain.childNodes).forEach(n => modalBody.append(n));
+  modalContent.append(modalBody);
+  modalDialog.append(modalContent);
   modal.append(modalDialog);
   document.querySelector('body').append(modal);
 };

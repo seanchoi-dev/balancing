@@ -1,4 +1,4 @@
-import { getRiotAPIKey, capitalize, getVersion, roman2arabic } from '../../scripts/utils.js';
+import { getRiotAPIKey,  getVersion } from '../../scripts/utils.js';
 import { loadCSS, loadScript } from '../../scripts/aem.js';
 
 const notFound = 'Not Found';
@@ -445,8 +445,8 @@ const initTeam = () => {
     const playerInputs = document.querySelectorAll('input[type=text]');
     playerInputs.forEach((input, index) => {
         input.addEventListener('keypress', e => {
-            e.preventDefault();
             if (e.key === 'Enter') {
+                e.preventDefault();
                 playerInputs[index + 1]?.focus();
                 playerInputs[index + 1]?.select();
             }
@@ -465,7 +465,7 @@ export default async function init (block) {
     configBody.innerHTML = teamConfigBody;
     configBody.querySelector('#version').textContent = await getVersion();
     block.prepend(configBody);
-    if(h1) {
+    if (h1) {
       const container = document.createElement('div');
       container.classList.add('container');
       const h1Body = document.createElement('div');
@@ -477,7 +477,7 @@ export default async function init (block) {
     }
     initTeam();
     // document.querySelector('audio').volume = 0.25;
-    // decorateAutoBlock(document.getElementById('releasenote'));
+    // fragmentModalLoad(document.getElementById('releasenote'));
     loadScript('/deps/bootstrap.bundle.min.js');
 }
 
@@ -496,7 +496,7 @@ const teamConfigBody = `
                     <div class="d-flex align-items-center gap-3">
                         <div class="text-white d-flex align-items-center gap-2">
                             <h2 id="version" class="h5 my-1 text-end"></h2>
-                            <a id="releasenote" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover modal" data-modal-hash="#releasenote" data-modal-path="/fragments/release-note" href="#releasenote">Release Note</a>
+                            <a id="releasenote" data-modal-class="modal-dialog-scrollable text-white" class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover modal" href="https://main--balancing--seanchoi-dev.hlx.page/fragments/release-note#release-note">Release Note</a>
                         </div>
                     </div>
                 </div>
