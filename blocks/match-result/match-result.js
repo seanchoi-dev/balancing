@@ -304,7 +304,7 @@ const historyHandler = (block, eventName) => {
 	}
 };
 
-export default async function fn(block) {
+const buildMatch = block => {
 	teamsHistory = [];
 	historyIndex = 0;
 	// API_KEY = await getRiotAPIKey();
@@ -318,4 +318,8 @@ export default async function fn(block) {
 	block.querySelector('#rerollBtn').addEventListener('click', () => historyHandler(block, 'reroll'));
 	block.querySelector('#backBtn').addEventListener('click', () => historyHandler(block, 'back'));
 	block.querySelector('#nextBtn').addEventListener('click', () => historyHandler(block, 'next'));
+};
+
+export default async function fn(block) {
+	document.querySelector('a[data-modal-path="/fragments/match-result"]').addEventListener('click', e => buildMatch(block));
 };

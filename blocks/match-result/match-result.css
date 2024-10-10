@@ -1,20 +1,18 @@
-.dialog-modal {
+.modal-dialog {
     max-width: 95vw;
+    max-height: 850px;
+    min-height: initial;
     width: fit-content;
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
     border: 2px solid #fff;
     border-radius: 30px;
-    background-color: #00000080;
+    background-color: #070e23e8;
 }
 
-#releasenote {
-    background-color: #fff;
-}
-
-.dialog-modal button.dialog-close {
-    right: 12.5px;
+.modal-content {
+    background-color: initial;
 }
 
 .player {

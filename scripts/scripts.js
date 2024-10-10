@@ -1,71 +1,171 @@
-/*
- * Copyright 2022 Adobe. All rights reserved.
- * This file is licensed to you under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License. You may obtain a copy
- * of the License at http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+import {
+  buildBlock,
+  loadHeader,
+  loadFooter,
+  decorateButtons,
+  decorateIcons,
+  decorateSections,
+  decorateBlocks,
+  decorateTemplateAndTheme,
+  waitForFirstImage,
+  loadSection,
+  loadSections,
+  loadCSS,
+  sampleRUM,
+} from './aem.js';
+
+import { createTag } from './utils.js';
+
+/**
+ * Builds hero block and prepends to main in a new section.
+ * @param {Element} main The container element
  */
+function buildHeroBlock(main) {
+  const h1 = main.querySelector('h1');
+  const picture = main.querySelector('picture');
+  // eslint-disable-next-line no-bitwise
+  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+    const section = document.createElement('div');
+    section.append(buildBlock('hero', { elems: [picture, h1] }));
+    main.prepend(section);
+  }
+}
 
-import { setLibs } from './utils.js';
+/**
+ * load fonts.css and set a session storage flag
+ */
+async function loadFonts() {
+  await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
+  try {
+    if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
+  } catch (e) {
+    // do nothing
+  }
+}
 
-// Add project-wide style path here.
-const STYLES = '';
+/**
+ * Builds all synthetic blocks in a container element.
+ * @param {Element} main The container element
+ */
+function buildAutoBlocks(main) {
+  try {
+    buildHeroBlock(main);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Auto Blocking failed', error);
+  }
+}
 
-// Use '/libs' if your live site maps '/libs' to milo's origin.
-const LIBS = 'https://milo.adobe.com/libs';
+/**
+ * Decorates the main element.
+ * @param {Element} main The main element
+ */
+// eslint-disable-next-line import/prefer-default-export
+export function decorateMain(main) {
+  // hopefully forward compatible button decoration
+  decorateButtons(main);
+  decorateIcons(main);
+  // buildAutoBlocks(main);
+  decorateSections(main);
+  decorateBlocks(main);
+}
 
-// Add any config options.
-export const CONFIG = {
-  codeRoot: '',
-  contentRoot: '',
-  // imsClientId: 'college',
-  // geoRouting: 'off',
-  // fallbackRouting: 'off',
-  libs: LIBS,
-  locales: {
-    '': { ietf: 'en-US', tk: 'hah7vzn.css' },
-  },
+const fragmentModalLoad = async (a) => {
+  let url;
+  try {
+    url = new URL(a.href);
+  } catch (e) {
+    console.error(e.toString());
+    return false;
+  }
+  const modalClass = a.dataset.modalClass ?? '';
+  a.dataset.modalPath = url.pathname;
+  a.dataset.modalHash = url.hash;
+  a.href = url.hash;
+  a.dataset.bsTarget = url.hash;
+  a.dataset.bsToggle = "modal";
+  a.className = `modal link-block ${[...a.classList].join(' ')}`;
+  const doc = await fetch(a.dataset.modalPath);
+  if (!doc || !doc.ok) return;
+  const modal = createTag('div', { class: 'modal fade', id: a.hash.substring(1) });
+  const modalDialog = createTag('div', { class: `modal-dialog modal-dialog-centered ${modalClass}` });
+  const modalContent = createTag('div', { class: 'modal-content' });
+  const modalBody = createTag('div', { class: 'modal-body' });
+  let fragmentMain = document.createElement('html');
+  fragmentMain.innerHTML = await doc.text();
+  fragmentMain = fragmentMain.querySelector('main');
+  if(!fragmentMain) return;
+  const { decorateMain } = await import('./scripts.js');
+  const { loadSections } = await import('./aem.js');
+  decorateMain(fragmentMain);
+  loadSections(fragmentMain);
+  Array.from(fragmentMain.childNodes).forEach(n => modalBody.append(n));
+  modalContent.append(modalBody);
+  modalDialog.append(modalContent);
+  modal.append(modalDialog);
+  document.querySelector('body').append(modal);
 };
 
-// Load LCP image immediately
-(async function loadLCPImage() {
-  const lcpImg = document.querySelector('img');
-  if(lcpImg) {
-    lcpImg.setAttribute('loading', 'eager');
-    lcpImg.setAttribute('fetchpriority', 'high');
-    document.querySelector('main').prepend(lcpImg.parentNode);
-    lcpImg.classList.add('background');
-    document.querySelector('main').style.opacity = 1;
-  }
-}());
-
-/*
- * ------------------------------------------------------------
- * Edit below at your own risk
- * ------------------------------------------------------------
+/**
+ * Loads everything needed to get to LCP.
+ * @param {Element} doc The container element
  */
+async function loadEager(doc) {
+  document.documentElement.lang = 'en';
+  decorateTemplateAndTheme();
+  const main = doc.querySelector('main');
+  if (main) {
+    decorateMain(main);
+    document.body.classList.add('appear');
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
+  }
 
-const miloLibs = setLibs(LIBS);
+  sampleRUM.enhance();
 
-(function loadStyles() {
-  const paths = [`${miloLibs}/styles/styles.css`];
-  if (STYLES) { paths.push(STYLES); }
-  paths.forEach((path) => {
-    const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', path);
-    document.head.appendChild(link);
-  });
-}());
+  try {
+    /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
+    if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
+      loadFonts();
+    }
+  } catch (e) {
+    // do nothing
+  }
+}
 
-(async function loadPage() {
-  const { loadArea, loadDelayed, setConfig, loadScript } = await import(`${miloLibs}/utils/utils.js`);
-  setConfig({ ...CONFIG, miloLibs });
-  await loadArea();
-  document.querySelector('main').classList.add('loaded');
-  await loadDelayed();
-}());
+/**
+ * Loads everything that doesn't need to be delayed.
+ * @param {Element} doc The container element
+ */
+async function loadLazy(doc) {
+  const main = doc.querySelector('main');
+  await loadSections(main);
+  main.querySelectorAll('a[href*="fragments/"]').forEach(a => fragmentModalLoad(a));
+
+  const { hash } = window.location;
+  const element = hash ? doc.getElementById(hash.substring(1)) : false;
+  if (hash && element) element.scrollIntoView();
+
+  // loadHeader(doc.querySelector('header'));
+  // loadFooter(doc.querySelector('footer'));
+
+  loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  loadFonts();
+}
+
+/**
+ * Loads everything that happens a lot later,
+ * without impacting the user experience.
+ */
+function loadDelayed() {
+  // eslint-disable-next-line import/no-cycle
+  window.setTimeout(() => import('./delayed.js'), 3000);
+  // load anything that can be postponed to the latest here
+}
+
+async function loadPage() {
+  await loadEager(document);
+  await loadLazy(document);
+  loadDelayed();
+}
+
+loadPage();
