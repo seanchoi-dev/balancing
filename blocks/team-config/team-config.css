@@ -10,6 +10,16 @@ header ~ main {
   color: var(--bs-white);
 }
 
+.team-config .noticeBody {
+  text-align: left;
+  max-width: 700px;
+  margin: 30px auto 0;
+}
+
+.team-config .noticeBody a {
+  color: rgb(186 214 255);
+}
+
 .team-config > div > div > strong {
     display: flex;
     justify-content: center;

@@ -455,6 +455,10 @@ const initTeam = () => {
 };
 
 export default async function init (block) {
+    const notices = block.querySelectorAll('p');
+    const noticeBody = document.createElement('div');
+    noticeBody.append(notices[0], notices[1]);
+    noticeBody.classList.add('noticeBody');
     const h1 = block.querySelector('h1');
     const matchLink = block.querySelector('a');
     matchLink?.parentElement.classList.add('d-flex', 'justify-content-center', 'my-3');
@@ -470,7 +474,7 @@ export default async function init (block) {
       container.classList.add('container');
       const h1Body = document.createElement('div');
       h1Body.classList.add('title', 'py-5', 'text-center', 'text-white', 'bg-dark-grey-opacity');
-      h1Body.append(h1);
+      h1Body.append(h1, noticeBody);
       container.append(h1Body)
       block.prepend(container);
       h1.style.display = 'block';
