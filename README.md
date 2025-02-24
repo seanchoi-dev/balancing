@@ -4,8 +4,8 @@
 
 
 ## Environments
-- Preview: https://main--balancing--seanchoi-dev.hlx.page/
-- Live: https://main--balancing--seanchoi-dev.hlx.live/
+- Preview: https://main--balancing--seanchoi-dev.aem.page/
+- Live: https://main--balancing--seanchoi-dev.aem.live/
 - Production: https://lolbalance.com/
 
 ## Installation
